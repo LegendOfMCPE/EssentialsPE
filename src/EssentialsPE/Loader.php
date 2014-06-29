@@ -8,6 +8,8 @@ use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
+use pocketmine\level;
+use pocketmine\level\Explosion;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
 use pocketmine\utils\Config;
@@ -77,6 +79,26 @@ class Loader extends PluginBase implements Listener{
                         }else{
                             $player->setOnFire($time);
                             $sender->sendMessage(TextFormat::YELLOW . "$args[0] is now on fire!");
+                        }
+                    }
+                }
+                return true;
+                break;
+                 case "explode":
+                if(count($args) != 2){
+                    $sender->sendMessage($usage);
+                }else{
+                    $player = $this->getPlayer($args[0]);
+                    $explosionpower = $args[1];
+                    if($player == false){
+                        $sender->sendMessage($notfound);
+                    }else{
+                        if(!is_numeric($explosionpower)){
+                            $sender->sendMessage(TextFormat::RED . "[Error] Invalid time.");
+                        }else{
+                            $explosion = new Explosion(new Position($player->x, ($entity->y +1), $player->z, $player->getLevel()), $explosionpower);
+                $explosion->explode();
+                            $sender->sendMessage(TextFormat::YELLOW . "$args[0] exploded!");
                         }
                     }
                 }
