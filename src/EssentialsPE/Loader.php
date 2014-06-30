@@ -75,8 +75,25 @@ class Loader extends PluginBase implements Listener{
                         if(!is_numeric($time)){
                             $sender->sendMessage(TextFormat::RED . "[Error] Invalid time.");
                         }else{
-                            $player->setOnFire($time);
+                            $player->setOnFire($time * 20);
                             $sender->sendMessage(TextFormat::YELLOW . "$args[0] is now on fire!");
+                        }
+                    }
+                }
+                case "setmaxhealth":
+                if(count($args) != 2){
+                    $sender->sendMessage($usage);
+                }else{
+                    $player = $this->getPlayer($args[0]);
+                    $maxhealth = $args[1];
+                    if($player == false){
+                        $sender->sendMessage($notfound);
+                    }else{
+                        if(!is_numeric($maxhealth)){
+                            $sender->sendMessage(TextFormat::RED . "[Error] Invalid health.");
+                        }else{
+                            $player->setMaxHealth($maxhealth);
+                            $sender->sendMessage(TextFormat::YELLOW . "$args[0] is max  health is $maxhealth !");
                         }
                     }
                 }
