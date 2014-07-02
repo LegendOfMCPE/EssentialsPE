@@ -4,6 +4,7 @@ namespace EssentialsPE\Commands;
 use EssentialsPE\BaseCommand;
 use EssentialsPE\Loader;
 use pocketmine\command\CommandSender;
+use pocketmine\player;
 use pocketmine\utils\TextFormat;
 
 class Burn extends BaseCommand{
@@ -21,7 +22,7 @@ class Burn extends BaseCommand{
         }else{
             $player = $this->getPlayer($args[0]);
             $time = $args[1];
-            if($player == false){
+            if($player->isOnline() == false){
                 $sender->sendMessage(TextFormat::RED . "[Error] Player not found.");
             }else{
                 if(!is_numeric($time)){
