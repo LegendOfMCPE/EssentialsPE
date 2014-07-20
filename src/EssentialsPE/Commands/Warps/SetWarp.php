@@ -15,7 +15,12 @@ class SetWarp extends BaseCommand{
         if(!$this->testPermission($sender)){
             return false;
         }
-        //TODO
+        //TODO Save the data
+        if(! isset($args[0])){
+            return false;
+        }
+        $warpName = $args[0];
+        //Save data
         return true;
     }
 } 
