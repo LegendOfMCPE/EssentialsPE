@@ -62,7 +62,7 @@ permissions:
                         children:
                             essentials.command.getpos.use:
                                 default: true
-                                description: "Get your curren position"
+                                description: "Get your current position"
                             essentials.command.getpos.other:
                                 default: op
                                 description: "Get other player's position"
@@ -127,7 +127,7 @@ permissions:
                         description: "Change your or others name"
                         children:
                             essentials.command.nick.use:
-                                default: op
+                                default: true
                                 description: "Change your name"
                             essentials.command.nick.other:
                                 default: op
