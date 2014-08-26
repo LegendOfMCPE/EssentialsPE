@@ -9,7 +9,7 @@ use pocketmine\utils\TextFormat;
 class Burn extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "burn", "Set a player on fire", "/burn <player> <seconds>");
-        $this->setPermission("essentials.command.burn");
+        $this->setPermission("essentials.burn");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class Mute extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "mute", "Prevent a player from chatting", "/mute <player>", ["silence"]);
-        $this->setPermission("essentials.command.mute");
+        $this->setPermission("essentials.mute");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){
@@ -25,7 +25,7 @@ class Mute extends BaseCommand{
         if($player === false){
             $sender->sendMessage(TextFormat::RED . "[Error] Player not found.");
         }else{
-            if($player->hasPermission("essentials.command.mute.exempt")){
+            if($player->hasPermission("essentials.mute.exempt")){
                 if(!$this->getAPI()->isMuted($player)){
                     $sender->sendMessage(TextFormat::RED . "$args[0] can't be muted");
                     return false;

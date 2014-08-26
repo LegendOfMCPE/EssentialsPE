@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class PowerToolToggle extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "powertooltoggle", "Disable PowerTool from all the items", "/powertooltoggle", ["ptt", "pttoggle"]);
-        $this->setPermission("essentials.command.powertooltoggle");
+        $this->setPermission("essentials.powertooltoggle");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

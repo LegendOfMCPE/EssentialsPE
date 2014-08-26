@@ -6,13 +6,12 @@ use EssentialsPE\Loader;
 use pocketmine\command\CommandSender;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
-use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
 class SetSpawn extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "setspawn", "Change your server main spawn point", "/setspawn");
-        $this->setPermission("essentials.command.setspawn");
+        $this->setPermission("essentials.setspawn");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){
@@ -24,8 +23,8 @@ class SetSpawn extends BaseCommand{
             $sender->sendMessage(TextFormat::RED . "Usage: " . $this->getUsage());
             return false;
         }
-        $sender->getLevel()->setSpawn(new Vector3($sender->getFloorX(), $sender->getFloorY(), $sender->getFloorZ()));
-        Server::getInstance()->setDefaultLevel($sender->getLevel());
+        $sender->getLevel()->setSpawnLocation(new Vector3($sender->getFloorX(), $sender->getFloorY(), $sender->getFloorZ()));
+        $sender->getServer()->setDefaultLevel($sender->getLevel());
         $sender->sendMessage(TextFormat::YELLOW . "Spawn point changed!");
         return true;
     }

@@ -4,13 +4,12 @@ namespace EssentialsPE\Commands;
 use EssentialsPE\BaseCommand;
 use EssentialsPE\Loader;
 use pocketmine\command\CommandSender;
-use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
 class KickAll extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "kickall", "Kick all the players", "/kickall <reason>");
-        $this->setPermission("essentials.command.kickall");
+        $this->setPermission("essentials.kickall");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){
@@ -24,7 +23,7 @@ class KickAll extends BaseCommand{
             $reason = implode(" ", $args);
         }
 
-        foreach(Server::getInstance()->getOnlinePlayers() as $p){
+        foreach($sender->getServer()->getOnlinePlayers() as $p){
             if($p != $sender){
                 $p->kick($reason);
             }

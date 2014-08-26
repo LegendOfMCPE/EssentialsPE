@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class Warp extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "warp", "Teleport to a warp", "/warp <name> [player]", ["warps"]);
-        $this->setPermission("essentials.command.warp.use");
+        $this->setPermission("essentials.warp.use");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

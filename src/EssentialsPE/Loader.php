@@ -1,6 +1,7 @@
 <?php
 namespace EssentialsPE;
 
+use EssentialsPE\Commands\AFK;
 use EssentialsPE\Commands\Broadcast; //Use API
 use EssentialsPE\Commands\Burn; //Use API
 use EssentialsPE\Commands\ClearInventory; //Use API
@@ -25,17 +26,25 @@ use EssentialsPE\Commands\Seen;
 use EssentialsPE\Commands\SetSpawn;
 use EssentialsPE\Commands\TempBan;
 use EssentialsPE\Commands\Top;
+use EssentialsPE\Commands\Unlimited;
 use EssentialsPE\Commands\Vanish; //Use API
 use EssentialsPE\Commands\Warps\RemoveWarp; //Use API
 use EssentialsPE\Commands\Warps\SetWarp; //Use API
 use EssentialsPE\Commands\Warps\Warp; //Use API
 use EssentialsPE\Events\EventHandler; //Use API
+use EssentialsPE\Events\PlayerAFKModeChangeEvent;
+use EssentialsPE\Events\PlayerGodModeChangeEvent;
+use EssentialsPE\Events\PlayerMuteEvent;
 use EssentialsPE\Events\PlayerNickChangeEvent;
+use EssentialsPE\Events\PlayerPvPModeChangeEvent;
+use EssentialsPE\Events\PlayerUnlimitedModeChangeEvent;
+use EssentialsPE\Events\PlayerVanishEvent;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
+use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
 
@@ -44,6 +53,7 @@ class Loader extends PluginBase{
 
     public function onEnable(){
         @mkdir($this->getDataFolder());
+        $this->checkConfig();
 	    $this->getLogger()->info(TextFormat::YELLOW . "Loading...");
         $this->getServer()->getPluginManager()->registerEvents(new EventHandler($this), $this);
         $this->registerCommands();
@@ -72,6 +82,7 @@ class Loader extends PluginBase{
 
     private function registerCommands(){
         $this->getServer()->getCommandMap()->registerAll("essentialspe", [
+            new AFK($this),
             new Broadcast($this),
             new Burn($this),
             new ClearInventory($this),
@@ -96,6 +107,7 @@ class Loader extends PluginBase{
             new Seen($this),
             new SetSpawn($this),
             new Top($this),
+            new Unlimited($this),
             new Vanish($this),
 
             //Wraps
@@ -103,6 +115,17 @@ class Loader extends PluginBase{
             //new SetWarp($this), // TODO
             //new Warp($this), // TODO
         ]);
+    }
+
+    private function checkConfig(){
+        $this->saveDefaultConfig();
+
+        if(!is_bool($this->getConfig()->get("safe-afk"))){
+            $this->getConfig()->set("safe-afk", true);
+        }
+
+        $this->saveConfig();
+        $this->reloadConfig();
     }
 
     /*
@@ -142,16 +165,20 @@ class Loader extends PluginBase{
      * Return a colored message replacing every
      * color code (&a = §a)
      *
-     * @param $message
+     * @param string $message
      * @param null $player
      * @return mixed
      */
     public function colorMessage($message, $player = null){
         $search = ["&0","&1","&2","&3","&4","&5","&6","&7","&8","&9","&a", "&b", "&c", "&d", "&e", "&f", "&k", "&l", "&m", "&n", "&o", "&r"];
-        //$formats = ["§0", "§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8", "§9", "§a", "§b", "§c", "§d", "§e", "§f", "§k", "§l", "§m", "§n", "§o", "§r"];
+        $formats = ["§0", "§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8", "§9", "§a", "§b", "§c", "§d", "§e", "§f", "§k", "§l", "§m", "§n", "§o", "§r"];
         foreach($search as $s){
             $code = substr($s, -1, 1);
             $message = str_replace($s, "§" . $code, $message);
+        }
+        foreach($formats as $f){
+            $code = $code = substr($f, -1, 1);
+            $message = str_replace("\\" . $f, "&" . $code, $message);
         }
         if(strpos($message, "§") !== false && ($player instanceof Player) && !$player->hasPermission("essentials.colorchat")){
             $player->sendMessage(TextFormat::RED . "You can't chat using colors!");
@@ -174,9 +201,14 @@ class Loader extends PluginBase{
     private $mutes = [];
     /** @var array  */
     private $default = [
+        "afk" => false,
         "god" => false,
-        "powertool" => false,
+        "powertool" => [
+            "commands" => false,
+            "chat-macro" => false,
+        ],
         "pvp" => false,
+        "unlimited" => false,
         "vanish" => false
     ];
 
@@ -228,6 +260,58 @@ class Loader extends PluginBase{
         return $this->sessions[$player->getName()][$key];
     }
 
+    /**
+     *            ______ _  __
+     *      /\   |  ____| |/ /
+     *     /  \  | |__  | ' /
+     *    / /\ \ |  __| |  <
+     *   / ____ \| |    | . \
+     *  /_/    \_|_|    |_|\_\
+     */
+
+    /**
+     * Change the AFK mode of a player
+     *
+     * @param Player $player
+     * @param bool $state
+     * @return bool
+     */
+    public function setAFKMode(Player $player, $state){
+        if(!is_bool($state)){
+            return false;
+        }
+        $this->getServer()->getPluginManager()->callEvent($ev = new PlayerAFKModeChangeEvent($this, $player, $state));
+        if($ev->isCancelled()){
+            return false;
+        }
+        $state = $ev->getAFKMode();
+        $this->setSession($player, "afk", $state);
+        return true;
+    }
+
+    /**
+     * Automatically switch the AFK mode on/off
+     *
+     * @param Player $player
+     */
+    public function switchAFKMode(Player $player){
+        if(!$this->isAFK($player)){
+            $this->setAFKMode($player, true);
+        }else{
+            $this->setAFKMode($player, false);
+        }
+    }
+
+    /**
+     * Tell if the player is AFK or not
+     *
+     * @param Player $player
+     * @return bool
+     */
+    public function isAFK(Player $player){
+        return $this->getSession($player, "afk");
+    }
+
     /**   _____           _
      *   / ____|         | |
      *  | |  __  ___   __| |
@@ -240,13 +324,18 @@ class Loader extends PluginBase{
      * Set the God Mode on or off
      *
      * @param Player $player
-     * @param $state
+     * @param bool $state
      * @return bool
      */
     public function setGodMode(Player $player, $state){
         if(!is_bool($state)){
             return false;
         }
+        $this->getServer()->getPluginManager()->callEvent($ev = new PlayerGodModeChangeEvent($this, $player, $state));
+        if($ev->isCancelled()){
+            return false;
+        }
+        $state = $ev->getGodMode();
         $this->setSession($player, "god", $state);
         return true;
     }
@@ -271,11 +360,7 @@ class Loader extends PluginBase{
      * @return bool
      */
     public function isGod(Player $player){
-        if($this->getSession($player, "god") == false){
-            return false;
-        }else{
-            return true;
-        }
+        return $this->getSession($player, "god");
     }
 
     /**  _    _
@@ -290,7 +375,7 @@ class Loader extends PluginBase{
      * Sets a new home location or modify it if the home exists
      *
      * @param Player $player
-     * @param $home_name
+     * @param string $home_name
      * @return bool
      */
     public function setHome(Player $player, $home_name){
@@ -316,7 +401,7 @@ class Loader extends PluginBase{
      * Teleport to the selected home
      *
      * @param Player $player
-     * @param $home_name
+     * @param string $home_name
      * @return bool
      */
     public function homeTp(Player $player, $home_name){
@@ -354,6 +439,9 @@ class Loader extends PluginBase{
     /**
      * Create the mute session for a player
      *
+     * The mute session is handled separately of other Sessions because
+     * using it separately, players can't be unmuted by leaving and joining again...
+     *
      * @param Player $player
      */
     public function muteSessionCreate(Player $player){
@@ -366,13 +454,18 @@ class Loader extends PluginBase{
      * Set the Mute mode on or off
      *
      * @param Player $player
-     * @param $state
+     * @param bool $state
      * @return bool
      */
     public function setMute(Player $player, $state){
         if(!is_bool($state)){
             return false;
         }
+        $this->getServer()->getPluginManager()->callEvent($ev = new PlayerMuteEvent($this, $player, $state));
+        if($ev->isCancelled()){
+            return false;
+        }
+        $state = $ev->willMute();
         $this->mutes[$player->getName()] = $state;
         return true;
     }
@@ -397,11 +490,7 @@ class Loader extends PluginBase{
      * @return bool
      */
     public function isMuted(Player $player){
-        if($this->mutes[$player->getName()] == false){
-            return false;
-        }else{
-            return true;
-        }
+        return $this->mutes[$player->getName()];
     }
 
     /** _   _ _      _
@@ -416,7 +505,7 @@ class Loader extends PluginBase{
      * Change the player name for chat and even on his NameTag (aka Nick)
      *
      * @param Player $player
-     * @param $nick
+     * @param string $nick
      * @param bool $save
      * @return bool
      */
@@ -490,10 +579,31 @@ class Loader extends PluginBase{
      * @return bool
      */
     public function isPowerToolEnabled(Player $player){
-        if($this->getSession($player, "powertool") === false){
+        if($this->sessions[$player->getName()]["powertool"]["commands"] === false || $this->sessions[$player->getName()]["powertool"]["chat-macro"] === false){
             return false;
         }else{
             return true;
+        }
+    }
+
+    /**
+     * Run all the commands and send all the chat messages assigned to an item
+     *
+     * @param Player $player
+     * @param Item $item
+     */
+    public function executePowerTool(Player $player, Item $item){
+        if($this->getPowerToolItemCommands($player, $item)){
+            if(is_array($this->getPowerToolItemCommands($player, $item))){
+                foreach($this->getPowerToolItemCommands($player, $item) as $command){
+                    $this->getServer()->dispatchCommand($player, $command);
+                }
+            }else{
+                $this->getServer()->dispatchCommand($player, $this->getPowerToolItemCommands($player, $item));
+            }
+        }
+        if($this->getPowerToolItemChatMacro($player, $item)){
+            $this->getServer()->broadcast("<" . $player->getDisplayName() . "> " . $this->getPowerToolItemChatMacro($player, $item), Server::BROADCAST_CHANNEL_USERS);
         }
     }
 
@@ -503,13 +613,45 @@ class Loader extends PluginBase{
      *
      * @param Player $player
      * @param Item $item
-     * @param $command_line
+     * @param string $command
      */
-    public function setPowerToolItemCommand(Player $player, Item $item, $command_line){
-        if($item === 0){
+    public function setPowerToolItemCommand(Player $player, Item $item, $command){
+        if($item->getID() === 0){
             return;
         }
-        $this->sessions[$player->getName()]["powertool"][$item->getID()] = $command_line;
+        $this->sessions[$player->getName()]["powertool"]["commands"][$item->getID()] = $command;
+    }
+
+    /**
+     * Add multiple commands (or a single command to the list) to the item you have in hand
+     * NOTE: If the hand is empty, it will be cancelled
+     *
+     * @param Player $player
+     * @param Item $item
+     * @param array $commands
+     */
+    public function setPowerToolItemCommands(Player $player, Item $item, array $commands){
+        if($item->getID() === 0){
+            return;
+        }
+        foreach($commands as $c){
+            $this->sessions[$player->getName()]["powertool"]["commands"][$item->getID()][] = $c;
+        }
+    }
+
+    /**
+     * @param Player $player
+     * @param Item $item
+     * @param string $command
+     */
+    public function removePowerToolCommand(Player $player, Item $item, $command){
+        if(!isset($this->sessions[$player->getName()]["powertool"]["commands"][$item->getID()])){
+            return;
+        }
+        $list = $this->getPowerToolItemCommands($player, $item);
+        if($key = array_search($command, $list) !== false){
+            unset($list[$key]);
+        }
     }
 
     /**
@@ -517,13 +659,42 @@ class Loader extends PluginBase{
      *
      * @param Player $player
      * @param Item $item
-     * @return bool
+     * @return bool|array
      */
-    public function getPowerToolItemCommand(Player $player, Item $item){
-        if(!isset($this->sessions[$player->getName()]["powertool"][$item->getID()])){
+    public function getPowerToolItemCommands(Player $player, Item $item){
+        if(!isset($this->sessions[$player->getName()]["powertool"]["commands"][$item->getID()])){
             return false;
         }
-        return $this->sessions[$player->getName()]["powertool"][$item->getID()];
+        return $this->sessions[$player->getName()]["powertool"]["commands"][$item->getID()];
+    }
+
+    /**
+     * Set a chat message to broadcast has the player
+     *
+     * @param Player $player
+     * @param Item $item
+     * @param string $chat_message
+     */
+    public function setPowerToolItemChatMacro(Player $player, Item $item, $chat_message){
+        if($item->getID() === 0){
+            return;
+        }
+        $chat_message = str_replace("%n", "\n", $chat_message);
+        $this->sessions[$player->getName()]["powertool"]["chat-macro"][$item->getID()] = $chat_message;
+    }
+
+    /**
+     * Get the message to broadcast has the player
+     *
+     * @param Player $player
+     * @param Item $item
+     * @return bool|string
+     */
+    public function getPowerToolItemChatMacro(Player $player, Item $item){
+        if(!isset($this->sessions[$player->getName()]["powertool"]["chat-macro"][$item->getID()])){
+            return false;
+        }
+        return $this->sessions[$player->getName()]["powertool"]["chat-macro"][$item->getID()];
     }
 
     /**
@@ -533,7 +704,8 @@ class Loader extends PluginBase{
      * @param Item $item
      */
     public function disablePowerToolItem(Player $player, Item $item){
-        unset($this->sessions[$player->getName()]["powertool"][$item->getID()]);
+        unset($this->sessions[$player->getName()]["powertool"]["commands"][$item->getID()]);
+        unset($this->sessions[$player->getName()]["powertool"]["chat-macro"][$item->getID()]);
     }
 
     /**
@@ -542,7 +714,8 @@ class Loader extends PluginBase{
      * @param Player $player
      */
     public function disablePowerTool(Player $player){
-        $this->setSession($player, "powertool", false);
+        $this->sessions[$player->getName()]["powertool"]["commands"] = false;
+        $this->sessions[$player->getName()]["powertool"]["chat-macro"] = false;
     }
 
     /**  _____        _____
@@ -557,13 +730,18 @@ class Loader extends PluginBase{
      * Set the PvP mode on or off
      *
      * @param Player $player
-     * @param $state
+     * @param bool $state
      * @return bool
      */
     public function setPvP(Player $player, $state){
         if(!is_bool($state)){
             return false;
         }
+        $this->getServer()->getPluginManager()->callEvent($ev = new PlayerPvPModeChangeEvent($this, $player, $state));
+        if($ev->isCancelled()){
+            return false;
+        }
+        $state = $ev->getPvPMode();
         $this->setSession($player, "pvp", $state);
         return true;
     }
@@ -588,11 +766,7 @@ class Loader extends PluginBase{
      * @return bool
      */
     public function isPvPEnabled(Player $player){
-        if($this->getSession($player, "pvp") === false){
-            return false;
-        }else{
-            return true;
-        }
+        return $this->getSession($player, "pvp");
     }
 
     /** __          __
@@ -610,7 +784,7 @@ class Loader extends PluginBase{
      * it use Player to handle the position, but may change later
      *
      * @param Player $player
-     * @param $warp
+     * @param string $warp
      */
     public function setWarp(Player $player, $warp){
         $config = new Config($this->getDataFolder() . "Warps.yml", Config::YAML);
@@ -627,7 +801,7 @@ class Loader extends PluginBase{
     /**
      * Remove a Warp if exists
      *
-     * @param $warp
+     * @param string $warp
      * @return bool
      */
     public function removeWarp($warp){
@@ -643,7 +817,7 @@ class Loader extends PluginBase{
     /**
      * Tell if a Warp exists
      *
-     * @param $warp
+     * @param string $warp
      * @return bool
      */
     public function warpExist($warp){
@@ -659,7 +833,7 @@ class Loader extends PluginBase{
      * Teleport a player to a Warp
      *
      * @param Player $player
-     * @param $warp
+     * @param string $warp
      * @return bool
      */
     public function tpWarp(Player $player, $warp){
@@ -684,6 +858,53 @@ class Loader extends PluginBase{
         //NOTE: Consider using wordwrap($string, $width, "\n", true)
     }
 
+    /**  _    _       _ _           _ _           _   _____ _
+     *  | |  | |     | (_)         (_| |         | | |_   _| |
+     *  | |  | |_ __ | |_ _ __ ___  _| |_ ___  __| |   | | | |_ ___ _ __ ___  ___
+     *  | |  | | '_ \| | | '_ ` _ \| | __/ _ \/ _` |   | | | __/ _ | '_ ` _ \/ __|
+     *  | |__| | | | | | | | | | | | | ||  __| (_| |  _| |_| ||  __| | | | | \__ \
+     *   \____/|_| |_|_|_|_| |_| |_|_|\__\___|\__,_| |_____|\__\___|_| |_| |_|___/
+     */
+
+    /**
+     * Set the unlimited place of items on/off to a player
+     *
+     * @param Player $player
+     * @param bool $mode
+     * @return bool
+     */
+    public function setUnlimited(Player $player, $mode){
+        if(!is_bool($mode)){
+            return false;
+        }
+        $this->getServer()->getPluginManager()->callEvent($ev = new PlayerUnlimitedModeChangeEvent($this, $player, $mode));
+        if($ev->isCancelled()){
+            return false;
+        }
+        $mode = $ev->getUnlimitedMode();
+        $this->setSession($player, "unlimited", $mode);
+        return true;
+    }
+
+    /**
+     * @param Player $player
+     */
+    public function switchUnlimited(Player $player){
+        if(!$this->isUnlimitedEnabled($player)){
+            $this->setUnlimited($player, true);
+        }else{
+            $this->setUnlimited($player, false);
+        }
+    }
+
+    /**
+     * @param Player $player
+     * @return bool
+     */
+    public function isUnlimitedEnabled(Player $player){
+        return $this->getSession($player, "unlimited");
+    }
+
     /** __      __         _     _
      *  \ \    / /        (_)   | |
      *   \ \  / __ _ _ __  _ ___| |__
@@ -696,13 +917,18 @@ class Loader extends PluginBase{
      * Set the Vanish mode on or off
      *
      * @param Player $player
-     * @param $state
+     * @param bool $state
      * @return bool
      */
     public function setVanish(Player $player, $state){
         if(!is_bool($state)){
             return false;
         }
+        $this->getServer()->getPluginManager()->callEvent($ev = new PlayerVanishEvent($this, $player, $state));
+        if($ev->isCancelled()){
+            return false;
+        }
+        $state = $ev->willVanish();
         $this->setSession($player, "vanish", $state);
         if($state === false){
             foreach($this->getServer()->getOnlinePlayers() as $p){
@@ -725,14 +951,9 @@ class Loader extends PluginBase{
     public function switchVanish(Player $player){
         if(!$this->isVanished($player)){
             $this->setVanish($player, true);
-
         }else{
             $this->setVanish($player, false);
-            foreach($this->getServer()->getOnlinePlayers() as $p){
-                $p->showPlayer($player);
-            }
         }
-        return true;
     }
 
     /**
@@ -742,23 +963,19 @@ class Loader extends PluginBase{
      * @return bool
      */
     public function isVanished(Player $player){
-        if($this->getSession($player, "vanish") == false){
-            return false;
-        }else{
-            return true;
-        }
+        return $this->getSession($player, "vanish");
     }
 
     /**
      * Allow to switch between levels Vanished!
-     * you need to teleport the player first and call the EntityLevelChangeEvent first...
+     * You need to teleport the player to a different level in order to call this event
      *
      * @param Player $player
      * @param Level $origin
      * @param Level $target
      */
     public function switchLevelVanish(Player $player, Level $origin, Level $target){
-        if($this->isVanished($player)){
+        if($origin->getName() !== $target->getName() && $this->isVanished($player)){
             foreach($origin->getPlayers() as $p){
                 $p->showPlayer($player);
             }

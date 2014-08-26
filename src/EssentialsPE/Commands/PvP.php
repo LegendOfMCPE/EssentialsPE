@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class PvP extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "pvp", "Toggle PvP on/off", "/pvp <on|off>");
-        $this->setPermission("essentials.command.pvp");
+        $this->setPermission("essentials.pvp");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

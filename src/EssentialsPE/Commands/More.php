@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class More extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "more", "Get a stack of the item you're holding", "/more");
-        $this->setPermission("essentials.command.more");
+        $this->setPermission("essentials.more.use");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){
@@ -27,8 +27,17 @@ class More extends BaseCommand{
         }
         $inv = $sender->getInventory();
         $item = $inv->getItemInHand();
-        $item->setCount($item->getMaxStackSize());
-        $inv->setItemInHand($item);
+        if($item->getID() === 0){
+            $sender->sendMessage(TextFormat::RED . "You can't get a stack of AIR");
+            return false;
+        }
+        if(!$sender->hasPermission("essentials.more.oversizedstacks")){
+            $item->setCount($item->getMaxStackSize());
+            $inv->setItemInHand($item);
+        }else{
+            $item->setCount(64);
+            $inv->setItemInHand($item);
+        }
         return true;
     }
 }

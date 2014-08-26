@@ -4,13 +4,12 @@ namespace EssentialsPE\Commands;
 use EssentialsPE\BaseCommand;
 use EssentialsPE\Loader;
 use pocketmine\command\CommandSender;
-use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
 class Seen extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "seen", "See player's last played time", "/seen <player>");
-        $this->setPermission("essentials.command.seen");
+        $this->setPermission("essentials.seen");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){
@@ -24,10 +23,10 @@ class Seen extends BaseCommand{
             if($player != false){
                 $sender->sendMessage(TextFormat::GREEN . $player->getDisplayName() . " is online!");
             }else{
-                if(!is_numeric(Server::getInstance()->getOfflinePlayer($args[0])->getLastPlayed())){
+                if(!is_numeric($sender->getServer()->getOfflinePlayer($args[0])->getLastPlayed())){
                     $sender->sendMessage(TextFormat::RED . "$args[0] never played on this server.");
                 }else{
-                    $player = Server::getInstance()->getOfflinePlayer($args[0])->getLastPlayed() / 1000;
+                    $player = $sender->getServer()->getOfflinePlayer($args[0])->getLastPlayed() / 1000;
                     $current = time();
                     if(date("Y", $player) == date("Y", $current)){ //Year (Ex. "2014")
                         if(date("n", $player) == date("n", $current)){ //Month in numbers (1 - 12)

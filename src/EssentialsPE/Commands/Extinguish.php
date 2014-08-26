@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class Extinguish extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "extinguish", "Extinguish a player", "/extinguish [player]", ["ext"]);
-        $this->setPermission("essentials.command.extinguish.use");
+        $this->setPermission("essentials.extinguish.use");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){
@@ -34,7 +34,7 @@ class Extinguish extends BaseCommand{
                 }
                 break;
             case 1:
-                if(!$sender->hasPermission("essentials.command.extinguish.other")){
+                if(!$sender->hasPermission("essentials.extinguish.other")){
                     $sender->sendMessage(TextFormat::RED . $this->getPermissionMessage());
                 }else{
                     $player = $this->getAPI()->getPlayer($args[0]);

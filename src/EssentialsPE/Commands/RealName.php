@@ -9,7 +9,7 @@ use pocketmine\utils\TextFormat;
 class RealName extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "realname", "Check the realname of a player", "/realname <player>");
-        $this->setPermission("essentials.command.realname");
+        $this->setPermission("essentials.realname");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

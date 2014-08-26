@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class Compass extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "compass", "Display your current bearing direction", "/compass", ["direction"]);
-        $this->setPermission("essentials.command.compass");
+        $this->setPermission("essentials.compass");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

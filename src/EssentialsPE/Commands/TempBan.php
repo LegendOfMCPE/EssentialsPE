@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class TempBan extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "tempban", "Temporary bans the specified player", "/tempban <player> <time ...> [reason ...]");
-        $this->setPermission("essentials.command.tempban");
+        $this->setPermission("essentials.tempban");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){
@@ -27,8 +27,8 @@ class TempBan extends BaseCommand{
             return false;
         }
         $seconds = 0;
-        while(preg_match('#^(\d+(\.\d+)?)(y|mo|w|d|h|m|s)$#i', array_shift($args), $match)){
-            $match = $match[0]; // TODO check if the flag is wrong
+        while(preg_match_all('#^(\d+(\.\d+)?)(y|mo|w|d|h|m|s)$#', $shifted = array_shift($args), $match, PREG_SET_ORDER)){
+            $match = $match[0]; // it won't get two matches anyways, or we will just ignore it (like 2w3s will only be parsed as 2 "w"eeks)
             if(!is_numeric($match[1])){
                 break;
             }
@@ -44,6 +44,9 @@ class TempBan extends BaseCommand{
             $amplifier = floatval($match[1]);
             $seconds += $amplifier * $unit;
         }
+        if(is_string($shifted)) {
+            array_unshift($args, $shifted);
+        }
         $reason = implode(" ", $args);
         $date = new \DateTime;
         $date->setTimestamp($expiryTimestamp = time() + $seconds);
@@ -52,7 +55,7 @@ class TempBan extends BaseCommand{
         $ban->setReason($reason);
         $this->getPlugin()->getServer()->getNameBans()->add($ban);
         $format = "M jS y H:i:s";
-        $player->close("Banned until ".date($format, $expiryTimestamp));
+        $player->close("Banned until " . date($format, $expiryTimestamp));
         return true;
     }
 }

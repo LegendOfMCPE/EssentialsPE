@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class Nick extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "nick", "Change your in-game name", "/nick <new nick|off> [player]", ["nickname"]);
-        $this->setPermission("essentials.command.nick.use");
+        $this->setPermission("essentials.nick.use");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){
@@ -38,7 +38,7 @@ class Nick extends BaseCommand{
                     }
                     break;
                 case 2:
-                    if(!$sender->hasPermission("essentials.command.nick.other")){
+                    if(!$sender->hasPermission("essentials.nick.other")){
                         $sender->sendMessage(TextFormat::RED . $this->getPermissionMessage());
                     }else{
                         $nickname = $args[0];

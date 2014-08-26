@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class God extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "god", "Prevent you to take any damage", "/god [player]", ["godmode", "tgm"]);
-        $this->setPermission("essentials.command.god.use");
+        $this->setPermission("essentials.god.use");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){
@@ -40,7 +40,7 @@ class God extends BaseCommand{
                 return true;
                 break;
             case 1:
-                if(!$sender->hasPermission("essentials.command.god.other")){
+                if(!$sender->hasPermission("essentials.god.other")){
                     $sender->sendMessage(TextFormat::RED . $this->getPermissionMessage());
                     return false;
                 }

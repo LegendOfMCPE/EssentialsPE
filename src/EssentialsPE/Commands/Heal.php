@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class Heal extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "heal", "Heal yourself or other player", "/heal [player]");
-        $this->setPermission("essentials.command.heal.use");
+        $this->setPermission("essentials.heal.use");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){
@@ -34,7 +34,7 @@ class Heal extends BaseCommand{
                 }
                 break;
             case 1:
-                if(!$sender->hasPermission("essentials.command.heal.other")){
+                if(!$sender->hasPermission("essentials.heal.other")){
                     $sender->sendMessage(TextFormat::RED . $this->getPermissionMessage());
                 }else{
                     $player = $this->getAPI()->getPlayer($args[0]);

@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class GetPos extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "getpos", "Get your/other's position", "/getpos [player]", ["coords", "position", "whereami", "getlocation", "getloc"]);
-        $this->setPermission("essentials.command.getpos.use");
+        $this->setPermission("essentials.getpos.use");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){
@@ -34,7 +34,7 @@ class GetPos extends BaseCommand{
                 }
                 break;
             case 1:
-                if(!$sender->hasPermission("essentials.command.getpos.other")){
+                if(!$sender->hasPermission("essentials.getpos.other")){
                     $sender->sendMessage(TextFormat::RED . $this->getPermissionMessage());
                 }else{
                     $player = $this->getAPI()->getPlayer($args[0]);

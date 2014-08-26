@@ -11,7 +11,7 @@ use pocketmine\utils\TextFormat;
 class Top extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "top", "Teleport to the highest block above you", "/top");
-        $this->setPermission("essentials.command.top");
+        $this->setPermission("essentials.top");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

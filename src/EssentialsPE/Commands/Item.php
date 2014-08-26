@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class Item extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "item", "Gives yourself an item", "/item <item[:damage|metadata]> [amount]", ["i"]);
-        $this->setPermission("essentials.command.item");
+        $this->setPermission("essentials.item");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

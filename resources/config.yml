@@ -1,0 +1,8 @@
+#EssentialsPE configuration
+#This configuration flie let you modify how EssentialsPE work with some features
+
+#This option let you disable player damage when they're AFK
+safe-afk: true
+
+#This option let you limit the block distance for players to teleport using "/jump"
+#jump-distance: 1000

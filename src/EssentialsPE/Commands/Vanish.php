@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class Vanish extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "vanish", "Hide from other players!", "/vanish [player]", ["v"]);
-        $this->setPermission("essentials.command.vanish.use");
+        $this->setPermission("essentials.vanish.use");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

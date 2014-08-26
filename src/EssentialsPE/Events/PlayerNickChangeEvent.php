@@ -2,27 +2,28 @@
 namespace EssentialsPE\Events;
 
 
-use EssentialsPE\BaseEvent;
 use EssentialsPE\Loader;
 use pocketmine\event\Cancellable;
+use pocketmine\event\plugin\PluginEvent;
 use pocketmine\Player;
 
-class PlayerNickChangeEvent extends BaseEvent implements Cancellable{
+class PlayerNickChangeEvent extends PluginEvent implements Cancellable{
     public static $handlerList = null;
+
     /** @var Player  */
-    private $player;
+    protected $player;
     /** @var  string */
-    private   $new_nick;
+    protected   $new_nick;
     /** @var  string */
-    private   $old_nick;
-    /** @var  string */
-    private $nametag;
+    protected   $old_nick;
+    /** @var bool|mixed  */
+    protected $nametag;
 
     /**
      * @param Loader $plugin
      * @param Player $player
-     * @param $new_nick
-     * @param $nametag
+     * @param string $new_nick
+     * @param mixed $nametag
      */
     public function __construct(Loader $plugin, Player $player, $new_nick, $nametag = false){
         parent::__construct($plugin);
@@ -33,6 +34,8 @@ class PlayerNickChangeEvent extends BaseEvent implements Cancellable{
     }
 
     /**
+     * Return the player to be used
+     *
      * @return Player
      */
     public function getPlayer(){
@@ -40,6 +43,8 @@ class PlayerNickChangeEvent extends BaseEvent implements Cancellable{
     }
 
     /**
+     * Return the new nick to be set
+     *
      * @return string
      */
     public function getNewNick(){
@@ -47,6 +52,8 @@ class PlayerNickChangeEvent extends BaseEvent implements Cancellable{
     }
 
     /**
+     * Tell the actual nick of the player
+     *
      * @return string
      */
     public function getOldNick(){
@@ -54,6 +61,8 @@ class PlayerNickChangeEvent extends BaseEvent implements Cancellable{
     }
 
     /**
+     * Change the nick to be set
+     *
      * @param string $nick
      */
     public function setNick($nick){
@@ -61,6 +70,9 @@ class PlayerNickChangeEvent extends BaseEvent implements Cancellable{
     }
 
     /**
+     * Return the NameTag to be set
+     * Usually it's the same has the new nick, but plugins can use it to modify the NameTag too
+     *
      * @return bool|string
      */
     public function getNameTag(){
@@ -68,7 +80,9 @@ class PlayerNickChangeEvent extends BaseEvent implements Cancellable{
     }
 
     /**
-     * @param $nametag
+     * Change the NameTag to be set
+     *
+     * @param string $nametag
      */
     public function setNameTag($nametag){
         $this->nametag = $nametag;

@@ -12,7 +12,7 @@ use pocketmine\utils\TextFormat;
 class Jump extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "jump", "Teleport you to the block you're looking at", "/jump", ["j", "jumpto"]);
-        $this->setPermission("essentials.command.jump");
+        $this->setPermission("essentials.jump");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){
