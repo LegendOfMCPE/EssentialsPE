@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class Invsee extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "invsee", "See other players' inventory", "/invsee [player]");
-        $this->setPermission("essentials.invsee.use");
+        $this->setPermission("essentials.invsee");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

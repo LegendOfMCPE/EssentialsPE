@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class Extinguish extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "extinguish", "Extinguish a player", "/extinguish [player]", ["ext"]);
-        $this->setPermission("essentials.extinguish.use");
+        $this->setPermission("essentials.extinguish");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

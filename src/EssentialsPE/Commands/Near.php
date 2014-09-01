@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class Near extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "near", "", "/near [[player] radius]", ["nearby"]);
-        $this->setPermission("essentials.near.use");
+        $this->setPermission("essentials.near");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

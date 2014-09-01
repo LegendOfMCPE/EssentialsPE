@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class AFK extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "afk", "Toggle the \"Away From the Keyboard\" status", "/afk [player]", ["away"]);
-        $this->setPermission("essentials.afk.use");
+        $this->setPermission("essentials.afk");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

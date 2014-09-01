@@ -11,7 +11,7 @@ use pocketmine\utils\TextFormat;
 class PowerTool extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "powertool", "Toogle PowerTool on the item you're holding", "/powertool <command> <arguments...>", ["pt"]);
-        $this->setPermission("essentials.powertool.use");
+        $this->setPermission("essentials.powertool");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

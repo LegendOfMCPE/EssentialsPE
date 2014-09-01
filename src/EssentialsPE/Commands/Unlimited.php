@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class Unlimited extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "unlimited", "Allow you to place unlimited blocks", "/unlimited [player]", ["ul", "unl"]);
-        $this->setPermission("essentials.unlimited.use");
+        $this->setPermission("essentials.unlimited");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

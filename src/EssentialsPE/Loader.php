@@ -25,7 +25,6 @@ use EssentialsPE\Commands\PowerTool\PowerToolToggle; //Use API
 use EssentialsPE\Commands\PvP; //Use API
 use EssentialsPE\Commands\RealName; //Use API
 use EssentialsPE\Commands\Repair;
-use EssentialsPE\Commands\RotateHead;
 use EssentialsPE\Commands\Seen;
 use EssentialsPE\Commands\SetSpawn;
 use EssentialsPE\Commands\TempBan;
@@ -64,7 +63,7 @@ class Loader extends PluginBase{
     public function onEnable(){
         @mkdir($this->getDataFolder());
         $this->checkConfig();
-        $this->enableConfigs();
+        $this->enableDataBases();
 	    $this->getLogger()->info(TextFormat::YELLOW . "Loading...");
         $this->getServer()->getPluginManager()->registerEvents(new EventHandler($this), $this);
         $this->registerCommands();
@@ -158,10 +157,10 @@ class Loader extends PluginBase{
         $cfg->reload();
     }
 
-    public function enableConfigs(){
+    public function enableDataBases(){
         if(!file_exists($this->getDataFolder() . "warps.db")){
             $this->warps = new \SQLite3($this->getDataFolder() . "warps.db");
-            $this->warps->exec("CREATE TABLE warps ( name TEXT PRIMARY KEY, x INTEGER, y INTEGER, z INTEGER )");
+            $this->warps->exec('CREATE TABLE warps ( name TEXT PRIMARY KEY, x INTEGER, y INTEGER, z INTEGER )', SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
         }else{
             $this->warps = new \SQLite3($this->getDataFolder() . "warps.db", SQLITE3_OPEN_READWRITE);
         }

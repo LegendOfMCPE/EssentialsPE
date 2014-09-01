@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class ClearInventory extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "clearinventory", "Clear your/other's inventory", "/clearinventory [player]", ["ci", "clean", "clearinvent"]);
-        $this->setPermission("essentials.clearinventory.use");
+        $this->setPermission("essentials.clearinventory");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

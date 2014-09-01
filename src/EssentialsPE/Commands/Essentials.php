@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 class Essentials extends BaseCommand{
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "essentials", "Get current Essentials version", "/essentials [reload]", ["ess"]);
-        $this->setPermission("essential.essentials.use");
+        $this->setPermission("essential.essentials");
     }
 
     public function execute(CommandSender $sender, $alias, array $args){

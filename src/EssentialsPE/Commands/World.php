@@ -25,12 +25,14 @@ class World extends BaseCommand{
         }
         switch(count($args)){
             case 1:
-                $world = $args[0];
-                if(!$sender->getServer()->isLevelGenerated($world) || !$sender->getServer()->isLevelLoaded($world)){
-                    $sender->sendMessage(TextFormat::RED . "[Error] World " . ($sender->getServer()->isLevelGenerated($world) ? "is not loaded" : "not found"));
+                if(!$sender->getServer()->isLevelGenerated($args[0]) || !$sender->getServer()->isLevelLoaded($args[0])){
+                    $sender->sendMessage(TextFormat::RED . "[Error] World " . ($sender->getServer()->isLevelGenerated($args[0]) ? "is not loaded" : "not found"));
+                    return false;
+                }elseif(strtolower($sender->getLevel()->getName()) === strtolower($args[0])){
+                    $sender->sendMessage(TextFormat::RED . "You're already in world $args[0]");
                     return false;
                 }
-                $world = $sender->getServer()->getLevelByName($world);
+                $world = $sender->getServer()->getLevelByName($args[0]);
                 $sender->teleport(new Position($sender->getFloorX(), $sender->getFloorY(), $sender->getFloorZ(), $world), 0, 0);
                 $sender->sendMessage(TextFormat::YELLOW . "Teleporting...");
                 break;
