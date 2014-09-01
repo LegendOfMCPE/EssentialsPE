@@ -33,7 +33,7 @@ class Mute extends BaseCommand{
             }
         }
         $this->getAPI()->switchMute($player);
-        $sender->sendMessage(TextFormat::YELLOW . "$args[0] has been " . $this->getAPI()->isMuted($player) ? "muted!" : "unmuted!");
+        $sender->sendMessage(TextFormat::YELLOW . "$args[0] has been " . ($this->getAPI()->isMuted($player) ? "muted!" : "unmuted!"));
         return true;
     }
 } 
