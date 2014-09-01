@@ -23,18 +23,18 @@ class Vanish extends BaseCommand{
                     $sender->sendMessage(TextFormat::RED . "Usage: /vanish <player>");
                     return false;
                 }
-                $this->getAPI()->switchVanish($sender);
-                $sender->sendMessage(TextFormat::GRAY . "You're now " . ($this->getAPI()->isVanished($sender) ? "vanished!" : "visible!"));
+                $this->getPlugin()->switchVanish($sender);
+                $sender->sendMessage(TextFormat::GRAY . "You're now " . ($this->getPlugin()->isVanished($sender) ? "vanished!" : "visible!"));
                 break;
             case 1:
-                $player = $this->getAPI()->getPlayer($args[0]);
+                $player = $this->getPlugin()->getPlayer($args[0]);
                 if($player == false){
                     $sender->sendMessage(TextFormat::RED . "[Error] Player not found.");
                     return false;
                 }
-                $this->getAPI()->switchVanish($player);
-                $sender->sendMessage(TextFormat::GRAY . "$args[0] is now " . ($this->getAPI()->isVanished($player) ? "vanished!" : "visible!"));
-                $player->sendMessage(TextFormat::GRAY . "You're now " . ($this->getAPI()->isVanished($sender) ? "vanished!" : "visible!"));
+                $this->getPlugin()->switchVanish($player);
+                $sender->sendMessage(TextFormat::GRAY . "$args[0] is now " . ($this->getPlugin()->isVanished($player) ? "vanished!" : "visible!"));
+                $player->sendMessage(TextFormat::GRAY . "You're now " . ($this->getPlugin()->isVanished($sender) ? "vanished!" : "visible!"));
                 break;
             default:
                 $sender->sendMessage(TextFormat::RED . ($sender instanceof Player ? "" : "Usage: ") . $this->getUsage());

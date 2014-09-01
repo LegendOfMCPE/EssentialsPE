@@ -34,7 +34,7 @@ class More extends BaseCommand{
             $sender->sendMessage(TextFormat::RED . "You can't get a stack of AIR");
             return false;
         }
-        $item->setCount(($sender->hasPermission("essentials.oversizedstacks") ? $this->getAPI()->getConfig()->get("oversized-stacks") : $item->getMaxStackSize()));
+        $item->setCount(($sender->hasPermission("essentials.oversizedstacks") ? $this->getPlugin()->getConfig()->get("oversized-stacks") : $item->getMaxStackSize()));
         return true;
     }
 }

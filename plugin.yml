@@ -76,7 +76,7 @@ permissions:
                     essentials.god.other:
                         default: op
                         description: "Prevent other players to take damage"
-                    essentials.god.other:
+                    essentials.god.pvp:
                         default: op
                         description: "Let you attack other players while you're in god mode"
             essentials.heal:

@@ -29,19 +29,19 @@ class PowerTool extends BaseCommand{
         }
 
         if(count($args) === 0){
-            if(!$this->getAPI()->getPowerToolItemCommand($sender, $item) || !$this->getAPI()->getPowerToolItemChatMacro($sender, $item)){
+            if(!$this->getPlugin()->getPowerToolItemCommand($sender, $item) || !$this->getPlugin()->getPowerToolItemChatMacro($sender, $item)){
                 $sender->sendMessage(TextFormat::RED . $this->getUsage());
                 return false;
             }
-            if($this->getAPI()->getPowerToolItemCommand($sender, $item) !== false){
+            if($this->getPlugin()->getPowerToolItemCommand($sender, $item) !== false){
                 $sender->sendMessage(TextFormat::GREEN . "Command removed from this item.");
-            }elseif($this->getAPI()->getPowerToolItemCommands($sender, $item) !== false){
+            }elseif($this->getPlugin()->getPowerToolItemCommands($sender, $item) !== false){
                 $sender->sendMessage(TextFormat::GREEN . "Commands removed from this item.");
             }
-            if($this->getAPI()->getPowerToolItemChatMacro($sender, $item) !== false){
+            if($this->getPlugin()->getPowerToolItemChatMacro($sender, $item) !== false){
                 $sender->sendMessage(TextFormat::GREEN . "Chat macro removed from this item.");
             }
-            $this->getAPI()->disablePowerToolItem($sender, $item);
+            $this->getPlugin()->disablePowerToolItem($sender, $item);
         }else{
             if($args[0] == "pt" || $args[0] == "ptt" || $args[0] == "powertool" || $args[0] == "powertooltoggle"){
                 $sender->sendMessage(TextFormat::RED . "This command can't be assigned");
@@ -50,7 +50,7 @@ class PowerTool extends BaseCommand{
             $command = implode(" ", $args);
             if(stripos($command, "c:") !== false){ //Create a chat macro
                 $c = substr($command, 2);
-                $this->getAPI()->setPowerToolItemChatMacro($sender, $item, $c);
+                $this->getPlugin()->setPowerToolItemChatMacro($sender, $item, $c);
                 $sender->sendMessage(TextFormat::GREEN . "Chat macro successfully assigned to this item!");
             }elseif(stripos($command, "a:") !== false){
                 if(!$sender->hasPermission("essentials.powertool.append")){
@@ -59,7 +59,7 @@ class PowerTool extends BaseCommand{
                 }
                 $commands = substr($command, 2);
                 $commands = explode(";", $commands);
-                $this->getAPI()->setPowerToolItemCommands($sender, $item, $commands);
+                $this->getPlugin()->setPowerToolItemCommands($sender, $item, $commands);
                 $sender->sendMessage(TextFormat::GREEN . "Commands successfully assigned to this item!");
             }elseif(stripos($command, "r:") !== false){
                 if(!$sender->hasPermission("essentials.powertool.append")){
@@ -67,16 +67,16 @@ class PowerTool extends BaseCommand{
                     return false;
                 }
                 $command = substr($command, 2);
-                $this->getAPI()->removePowerToolItemCommand($sender, $item, $command);
+                $this->getPlugin()->removePowerToolItemCommand($sender, $item, $command);
                 $sender->sendMessage(TextFormat::YELLOW . "Command successfully removed from this item!");
             }elseif(count($args) === 1){
                 switch(strtolower($args[0])){
                     case "l":
                         $commands = false;
-                        if($this->getAPI()->getPowerToolItemCommand($sender, $item) !== false){
-                            $commands = $this->getAPI()->getPowerToolItemCommand($sender, $item);
-                        }elseif($this->getAPI()->getPowerToolItemCommands($sender, $item) !== false){
-                            $commands = $this->getAPI()->getPowerToolItemCommand($sender, $item);
+                        if($this->getPlugin()->getPowerToolItemCommand($sender, $item) !== false){
+                            $commands = $this->getPlugin()->getPowerToolItemCommand($sender, $item);
+                        }elseif($this->getPlugin()->getPowerToolItemCommands($sender, $item) !== false){
+                            $commands = $this->getPlugin()->getPowerToolItemCommand($sender, $item);
                         }
                         $list = "=== Command ===";
                         if($commands === false){
@@ -90,7 +90,7 @@ class PowerTool extends BaseCommand{
                                 }
                             }
                         }
-                        $chat_macro = $this->getAPI()->getPowerToolItemChatMacro($sender, $item);
+                        $chat_macro = $this->getPlugin()->getPowerToolItemChatMacro($sender, $item);
                         $list .= "\n=== Chat Macro ===";
                         if($chat_macro === false){
                             $list .= "\n" . TextFormat::ITALIC . "**There aren't any chat macros for this item**";
@@ -102,17 +102,17 @@ class PowerTool extends BaseCommand{
                         return true;
                         break;
                     case "d":
-                        if(!$this->getAPI()->getPowerToolItemCommand($sender, $item)){
+                        if(!$this->getPlugin()->getPowerToolItemCommand($sender, $item)){
                             $sender->sendMessage(TextFormat::RED . $this->getUsage());
                             return false;
                         }
-                        $this->getAPI()->disablePowerToolItem($sender, $item);
+                        $this->getPlugin()->disablePowerToolItem($sender, $item);
                         $sender->sendMessage(TextFormat::GREEN . "Command removed from this item.");
                         return true;
                         break;
                 }
             }else{
-                $this->getAPI()->setPowerToolItemCommand($sender, $item, $command);
+                $this->getPlugin()->setPowerToolItemCommand($sender, $item, $command);
                 $sender->sendMessage(TextFormat::GREEN . "Command successfully assigned to this item!");
             }
         }

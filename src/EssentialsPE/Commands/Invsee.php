@@ -27,15 +27,15 @@ class Invsee extends BaseCommand{
         }
         switch(count($args)){
             case 0:
-                if(!$this->getAPI()->isPlayerWatchingOtherInventory($sender)){
+                if(!$this->getPlugin()->isPlayerWatchingOtherInventory($sender)){
                     $sender->sendMessage(TextFormat::RED . $this->getUsage());
                     return false;
                 }
-                $this->getAPI()->restorePlayerInventory($sender);
+                $this->getPlugin()->restorePlayerInventory($sender);
                 $sender->sendMessage(TextFormat::AQUA . "Your inventory was restored!");
                 break;
             case 1:
-                $player = $this->getAPI()->getPlayer($args[0]);
+                $player = $this->getPlugin()->getPlayer($args[0]);
                 if($player === false){
                     $sender->sendMessage(TextFormat::RED . "[Error] Player not found");
                     return false;
@@ -43,7 +43,7 @@ class Invsee extends BaseCommand{
                     $sender->sendMessage(TextFormat::RED . "Player is on " . ($gm === "creative" ? "creative" : "spectator") . "mode");
                     return false;
                 }
-                $this->getAPI()->setPlayerInventory($sender, $player);
+                $this->getPlugin()->setPlayerInventory($sender, $player);
                 $sender->sendMessage(TextFormat::GREEN . "You're now watching $args[0]'" . (substr($args[0], -1, 1) === "s" ? "" : "s") . " inventory" . TextFormat::YELLOW . "\nTo restore your inventory run: " . TextFormat::AQUA . "/invsee");
                 break;
             default:

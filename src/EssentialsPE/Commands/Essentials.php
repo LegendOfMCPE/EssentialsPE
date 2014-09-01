@@ -28,7 +28,7 @@ class Essentials extends BaseCommand{
                             $sender->sendMessage(TextFormat::RED . $this->getPermissionMessage());
                             return false;
                         }
-                        $this->getAPI()->checkConfig();
+                        $this->getPlugin()->checkConfig();
                         $sender->sendMessage(TextFormat::AQUA . "Config successfully reloaded!");
                         break;
                     default:

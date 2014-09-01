@@ -11,14 +11,14 @@ use EssentialsPE\Commands\Extinguish; //Use API
 use EssentialsPE\Commands\GetPos; //Use API
 use EssentialsPE\Commands\God; //Use API
 use EssentialsPE\Commands\Heal; //Use API
-use EssentialsPE\Commands\Invsee;
+use EssentialsPE\Commands\Invsee; //Use API
 use EssentialsPE\Commands\ItemCommand;
 use EssentialsPE\Commands\ItemDB;
 use EssentialsPE\Commands\Jump;
 use EssentialsPE\Commands\KickAll;
 use EssentialsPE\Commands\More;
 use EssentialsPE\Commands\Mute; //Use API
-use EssentialsPE\Commands\Near;
+use EssentialsPE\Commands\Near; //Use aPI
 use EssentialsPE\Commands\Nick; //Use API
 use EssentialsPE\Commands\PowerTool\PowerTool; //Use API
 use EssentialsPE\Commands\PowerTool\PowerToolToggle; //Use API
@@ -44,7 +44,6 @@ use EssentialsPE\Events\PlayerPvPModeChangeEvent;
 use EssentialsPE\Events\PlayerUnlimitedModeChangeEvent;
 use EssentialsPE\Events\PlayerVanishEvent;
 use EssentialsPE\Tasks\AFKKickTask;
-use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\math\AxisAlignedBB;
@@ -1022,124 +1021,6 @@ class Loader extends PluginBase{
         return $this->getSession($player, "pvp");
     }
 
-    /** __          __
-     *  \ \        / /
-     *   \ \  /\  / __ _ _ __ _ __
-     *    \ \/  \/ / _` | '__| '_ \
-     *     \  /\  | (_| | |  | |_) |
-     *      \/  \/ \__,_|_|  | .__/
-     *                       | |
-     *                       |_|
-     */
-
-    /**
-     * Set's a new Warp or modify the position if already exists
-     * it use Player to handle the position, but may change later
-     *
-     * @param Player $player
-     * @param string $name
-     */
-    public function setWarp(Player $player, $name){
-        if(!$this->warpExist($name)){
-            $prepare = $this->warps->prepare("INSERT INTO warps (name, x, y, z) VALUES (:name, :x, :y, :z)");
-            $prepare->bindValue(":name", $name, SQLITE3_TEXT);
-            $prepare->bindValue(":x", $player->getX(), SQLITE3_INTEGER);
-            $prepare->bindValue(":y", $player->getY(), SQLITE3_INTEGER);
-            $prepare->bindValue(":z", $player->getZ(), SQLITE3_INTEGER);
-            $prepare->execute();
-        }elseif($player->hasPermission("essentials.warps")){
-            $prepare = $this->warps->prepare("UPDATE warps SET x = :x, y = :y, z = :z WHERE name = :name");
-            $prepare->bindValue(":name", $name);
-            $prepare->bindValue(":x", $player->getX());
-            $prepare->bindValue(":y", $player->getY());
-            $prepare->bindValue(":z", $player->getZ());
-            $prepare->execute();
-        }
-    }
-
-    /**
-     * Remove a Warp if exists
-     *
-     * @param string $name
-     */
-    public function removeWarp($name){
-        $prepare = $this->warps->prepare("DELETE FROM players WHERE name = :name");
-        $prepare->bindValue(":name", $name);
-        $prepare->execute();
-    }
-
-    /**
-     * Return warp information
-     *
-     * @param $name
-     * @return array|bool
-     */
-    public function getWarp($name){
-        $prepare = $this->warps->prepare("SELECT * FROM players WHERE name = :name");
-        $prepare->bindValue(":name", $name);
-        $result = $prepare->execute();
-
-        if($result instanceof \SQLite3Result){
-            $data = $result->fetchArray(SQLITE3_ASSOC);
-            $result->finalize();
-            if(isset($data["name"]) && $data["name"] === $name){
-                unset($data["name"]);
-                $prepare->close();
-                return $data;
-            }
-        }
-
-        $prepare->close();
-        return false;
-    }
-
-    /**
-     * Tell if a warp exists
-     *
-     * @param $name
-     * @return bool
-     */
-    public function warpExist($name){
-        return $this->getWarp($name) !== false;
-    }
-
-    /**
-     * Teleport a player to a Warp
-     *
-     * @param Player $player
-     * @param string $name
-     * @return bool
-     */
-    public function warpPlayer(Player $player, $name){
-        if(($warp = $this->getWarp($name)) !== false){
-            $player->teleport(new Vector3($warp["x"], $warp["y"], $warp["z"]));
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Return a list with all the available warps
-     *
-     * @return array|bool
-     */
-    public function warpList(){
-        $prepare = $this->warps->prepare("SELECT * FROM warps");
-        $result = $prepare->execute();
-
-        if($result instanceof \SQLite3Result){
-            $data = $result->fetchArray(SQLITE3_ASSOC);
-            $result->finalize();
-            $r = [];
-            foreach($data as $name => $array){
-                unset($array);
-                $r[] = $name;
-            }
-            return $r;
-        }
-        return false;
-    }
-
     /**  _    _       _ _           _ _           _   _____ _
      *  | |  | |     | (_)         (_| |         | | |_   _| |
      *  | |  | |_ __ | |_ _ __ ___  _| |_ ___  __| |   | | | |_ ___ _ __ ___  ___
@@ -1265,5 +1146,123 @@ class Loader extends PluginBase{
                 $p->hidePlayer($p);
             }
         }
+    }
+
+    /** __          __
+     *  \ \        / /
+     *   \ \  /\  / __ _ _ __ _ __
+     *    \ \/  \/ / _` | '__| '_ \
+     *     \  /\  | (_| | |  | |_) |
+     *      \/  \/ \__,_|_|  | .__/
+     *                       | |
+     *                       |_|
+     */
+
+    /**
+     * Set's a new Warp or modify the position if already exists
+     * it use Player to handle the position, but may change later
+     *
+     * @param Player $player
+     * @param string $name
+     */
+    public function setWarp(Player $player, $name){
+        if(!$this->warpExist($name)){
+            $prepare = $this->warps->prepare("INSERT INTO warps (name, x, y, z) VALUES (:name, :x, :y, :z)");
+            $prepare->bindValue(":name", $name, SQLITE3_TEXT);
+            $prepare->bindValue(":x", $player->getX(), SQLITE3_INTEGER);
+            $prepare->bindValue(":y", $player->getY(), SQLITE3_INTEGER);
+            $prepare->bindValue(":z", $player->getZ(), SQLITE3_INTEGER);
+            $prepare->execute();
+        }elseif($player->hasPermission("essentials.warps")){
+            $prepare = $this->warps->prepare("UPDATE warps SET x = :x, y = :y, z = :z WHERE name = :name");
+            $prepare->bindValue(":name", $name);
+            $prepare->bindValue(":x", $player->getX());
+            $prepare->bindValue(":y", $player->getY());
+            $prepare->bindValue(":z", $player->getZ());
+            $prepare->execute();
+        }
+    }
+
+    /**
+     * Remove a Warp if exists
+     *
+     * @param string $name
+     */
+    public function removeWarp($name){
+        $prepare = $this->warps->prepare("DELETE FROM players WHERE name = :name");
+        $prepare->bindValue(":name", $name);
+        $prepare->execute();
+    }
+
+    /**
+     * Return warp information
+     *
+     * @param $name
+     * @return array|bool
+     */
+    public function getWarp($name){
+        $prepare = $this->warps->prepare("SELECT * FROM players WHERE name = :name");
+        $prepare->bindValue(":name", $name);
+        $result = $prepare->execute();
+
+        if($result instanceof \SQLite3Result){
+            $data = $result->fetchArray(SQLITE3_ASSOC);
+            $result->finalize();
+            if(isset($data["name"]) && $data["name"] === $name){
+                unset($data["name"]);
+                $prepare->close();
+                return $data;
+            }
+        }
+
+        $prepare->close();
+        return false;
+    }
+
+    /**
+     * Tell if a warp exists
+     *
+     * @param $name
+     * @return bool
+     */
+    public function warpExist($name){
+        return $this->getWarp($name) !== false;
+    }
+
+    /**
+     * Teleport a player to a Warp
+     *
+     * @param Player $player
+     * @param string $name
+     * @return bool
+     */
+    public function warpPlayer(Player $player, $name){
+        if(($warp = $this->getWarp($name)) !== false){
+            $player->teleport(new Vector3($warp["x"], $warp["y"], $warp["z"]));
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Return a list with all the available warps
+     *
+     * @return array|bool
+     */
+    public function warpList(){
+        $prepare = $this->warps->prepare("SELECT * FROM warps");
+        $result = $prepare->execute();
+
+        if($result instanceof \SQLite3Result){
+            $data = $result->fetchArray(SQLITE3_ASSOC);
+            $result->finalize();
+            $r = [];
+            foreach($data as $name => $array){
+                unset($array);
+                $r[] = $name;
+            }
+            return $r;
+        }
+        return false;
     }
 }

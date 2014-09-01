@@ -21,7 +21,7 @@ class TempBan extends BaseCommand{
             $sender->sendMessage(TextFormat::RED . $this->getUsage());
             return false;
         }
-        $player = $this->getAPI()->getPlayer($name = array_shift($args));
+        $player = $this->getPlugin()->getPlayer($name = array_shift($args));
         /**
          * s = Seconds (with leading zeros)
          * i = Minutes

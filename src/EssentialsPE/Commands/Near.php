@@ -23,20 +23,20 @@ class Near extends BaseCommand{
                     $sender->sendMessage(TextFormat::RED . "Usage: /near <player> [radius]");
                     return false;
                 }
-                $this->broadcastPlayers($sender, "you", $this->getAPI()->getNearPlayers($sender));
+                $this->broadcastPlayers($sender, "you", $this->getPlugin()->getNearPlayers($sender));
                 break;
             case 1:
-                $player = $this->getAPI()->getPlayer($args[0]);
+                $player = $this->getPlugin()->getPlayer($args[0]);
                 if($player !== false){
                     if(!$sender->hasPermission("essentials.near.other")){
                         $sender->sendMessage(TextFormat::RED . $this->getPermissionMessage());
                         return false;
                     }
-                    $this->broadcastPlayers($sender, $player->getDisplayName(), $this->getAPI()->getNearPlayers($player));
+                    $this->broadcastPlayers($sender, $player->getDisplayName(), $this->getPlugin()->getNearPlayers($player));
                 }else{
                     if(is_numeric($args[0])){
                         $radius = $args[0];
-                        $this->broadcastPlayers($sender, "you", $this->getAPI()->getNearPlayers($sender, $radius));
+                        $this->broadcastPlayers($sender, "you", $this->getPlugin()->getNearPlayers($sender, $radius));
                     }
                     $sender->sendMessage(TextFormat::RED . ($sender->hasPermission("essentials.near.other") ? "[Error] Player not found" : $this->getPermissionMessage()));
                 }
@@ -46,7 +46,7 @@ class Near extends BaseCommand{
                     $sender->sendMessage(TextFormat::RED . $this->getPermissionMessage());
                     return false;
                 }
-                $player = $this->getAPI()->getPlayer($args[1]);
+                $player = $this->getPlugin()->getPlayer($args[1]);
                 if($player === false){
                     $sender->sendMessage(TextFormat::RED . "[Error] Player not found");
                     return false;
@@ -56,7 +56,7 @@ class Near extends BaseCommand{
                     $sender->sendMessage(TextFormat::RED . "[Error] Invalid radius");
                     return false;
                 }
-                $this->broadcastPlayers($sender, $player->getDisplayName(), $this->getAPI()->getNearPlayers($player, $radius));
+                $this->broadcastPlayers($sender, $player->getDisplayName(), $this->getPlugin()->getNearPlayers($player, $radius));
                 break;
             default:
                 $sender->sendMessage(TextFormat::RED . ($sender instanceof Player ? "" : "Usage: ") . $this->getUsage());

@@ -35,7 +35,7 @@ class ClearInventory extends BaseCommand{
                     $sender->sendMessage(TextFormat::RED . $this->getPermissionMessage());
                     return false;
                 }
-                $player = $this->getAPI()->getPlayer($args[0]);
+                $player = $this->getPlugin()->getPlayer($args[0]);
                 if($player === false){
                     $sender->sendMessage(TextFormat::RED . "[Error] Player not found.");
                     return false;

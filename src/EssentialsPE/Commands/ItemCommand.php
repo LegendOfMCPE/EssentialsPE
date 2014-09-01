@@ -62,7 +62,7 @@ class ItemCommand extends BaseCommand{
             if(!$sender->hasPermission("essentials.oversizedstacks")){
                 $item->setCount($item->getMaxStackSize());
             }else{
-                $item->setCount($this->getAPI()->getConfig()->get("oversized-stacks"));
+                $item->setCount($this->getPlugin()->getConfig()->get("oversized-stacks"));
             }
         }else{
             $item->setCount($args[1]);

@@ -6,11 +6,9 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityInventoryChangeEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\entity\EntityMoveEvent;
-use pocketmine\event\inventory\CraftItemEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
@@ -22,16 +20,15 @@ use pocketmine\event\server\ServerCommandEvent;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
-use pocketmine\tile\Furnace;
 use pocketmine\tile\Sign;
 use pocketmine\utils\TextFormat;
 
 class EventHandler implements Listener{
     /** @var \EssentialsPE\Loader  */
-    public $api;
+    public $plugin;
 
     public function __construct(Loader $plugin){
-        $this->api = $plugin;
+        $this->plugin = $plugin;
     }
 
     /**
@@ -45,7 +42,7 @@ class EventHandler implements Listener{
             $player->setBanned(false);
         }
         //Nick and NameTag set:
-        $this->api->setNick($player, $this->api->getNick($player), false);
+        $this->plugin->setNick($player, $this->plugin->getNick($player), false);
     }
 
     /**
@@ -55,13 +52,13 @@ class EventHandler implements Listener{
         $player = $event->getPlayer();
 
         //Session configure:
-        $this->api->muteSessionCreate($player);
-        $this->api->createSession($player);
+        $this->plugin->muteSessionCreate($player);
+        $this->plugin->createSession($player);
         //Nick and NameTag set:
         $event->setJoinMessage($player->getDisplayName() . " joined the game");
         //Hide vanished players
         foreach($player->getServer()->getOnlinePlayers() as $p){
-            if($this->api->isVanished($p)){
+            if($this->plugin->isVanished($p)){
                 $player->hidePlayer($p);
             }
         }
@@ -76,9 +73,9 @@ class EventHandler implements Listener{
         //Quit message (nick):
         $event->setQuitMessage($player->getDisplayName() . " left the game");
         //Nick and NameTag restore:
-        $this->api->setNick($player, $player->getName(), false);
+        $this->plugin->setNick($player, $player->getName(), false);
         //Session destroy:
-        $this->api->removeSession($player);
+        $this->plugin->removeSession($player);
     }
 
     /**
@@ -88,7 +85,7 @@ class EventHandler implements Listener{
      */
     public function onPlayerChat(PlayerChatEvent $event){
         $player = $event->getPlayer();
-        if($this->api->isMuted($player)){
+        if($this->plugin->isMuted($player)){
             $event->setCancelled(true);
         }
     }
@@ -101,7 +98,7 @@ class EventHandler implements Listener{
     public function onPlayerCommand(PlayerCommandPreprocessEvent $event){
         $player = $event->getPlayer();
 
-        $command = $this->api->colorMessage($event->getMessage(), $player);
+        $command = $this->plugin->colorMessage($event->getMessage(), $player);
         if($command === false){
             $event->setCancelled(true);
         }
@@ -112,7 +109,7 @@ class EventHandler implements Listener{
      * @param ServerCommandEvent $event
      */
     public function onServerCommand(ServerCommandEvent $event){
-        $command = $this->api->colorMessage($event->getCommand());
+        $command = $this->plugin->colorMessage($event->getCommand());
         if($command === false){
             $event->setCancelled(true);
         }
@@ -125,8 +122,8 @@ class EventHandler implements Listener{
     public function onEntityMove(EntityMoveEvent $event){
         $entity = $event->getEntity();
         if($entity instanceof Player){
-            if($this->api->isAFK($entity)){
-                $this->api->setAFKMode($entity, false);
+            if($this->plugin->isAFK($entity)){
+                $this->plugin->setAFKMode($entity, false);
                 $entity->sendMessage(TextFormat::GREEN . "You're no longer AFK");
                 foreach($entity->getServer()->getOnlinePlayers() as $p){
                     if($p !== $entity){
@@ -148,21 +145,7 @@ class EventHandler implements Listener{
         $origin = $event->getOrigin();
         $target = $event->getTarget();
         if($entity instanceof Player){
-            $this->api->switchLevelVanish($entity, $origin, $target);
-        }
-    }
-
-    /**
-     * @param EntityDamageEvent $event
-     *
-     * @priority HIGH
-     */
-    public function onEntityDamage(EntityDamageEvent $event){
-        $entity = $event->getEntity();
-        if($entity instanceof Player){
-            if($this->api->isGod($entity)){
-                $event->setCancelled(true);
-            }
+            $this->plugin->switchLevelVanish($entity, $origin, $target);
         }
     }
 
@@ -173,24 +156,26 @@ class EventHandler implements Listener{
      */
     public function onEntityDamageByEntity(EntityDamageByEntityEvent $event){
         $victim = $event->getEntity();
-        $issuer = $event->getDamager();
-        if($victim instanceof Player && $issuer instanceof Player){
-            if($this->api->isGod($victim) || ($this->api->isAFK($victim) && $this->api->getConfig()->get("safe-afk") === true)){
-                $event->setCancelled(true);
-            }elseif($this->api->isGod($issuer) && !$issuer->hasPermission("essentials.god.pvp")){
-                $event->setCancelled(true);
-            }
+        if($event->getEventName() === "EntityDamageByEntityEvent"){
+            $issuer = $event->getDamager();
+            if($victim instanceof Player && $issuer instanceof Player){
+                if($this->plugin->isGod($victim)){
+                    $event->setCancelled(true);
+                }elseif($this->plugin->isGod($issuer) && !$issuer->hasPermission("essentials.god.pvp")){
+                    $event->setCancelled(true);
+                }
 
-            if($this->api->isVanished($issuer) && !$issuer->hasPermission("essentials.vanish.pvp")){
-                $event->setCancelled(true);
-            }
+                if($this->plugin->isVanished($issuer) && !$issuer->hasPermission("essentials.vanish.pvp")){
+                    $event->setCancelled(true);
+                }
 
-            if(!$this->api->isPvPEnabled($issuer)){
-                $issuer->sendMessage(TextFormat::RED . "You have PvP disabled!");
-                $event->setCancelled(true);
-            }elseif(!$this->api->isPvPEnabled($victim)){
-                $issuer->sendMessage(TextFormat::RED . $victim->getDisplayName() . " have PvP disabled!");
-                $event->setCancelled(true);
+                if(!$this->plugin->isPvPEnabled($issuer)){
+                    $issuer->sendMessage(TextFormat::RED . "You have PvP disabled!");
+                    $event->setCancelled(true);
+                }elseif(!$this->plugin->isPvPEnabled($victim)){
+                    $issuer->sendMessage(TextFormat::RED . $victim->getDisplayName() . " have PvP disabled!");
+                    $event->setCancelled(true);
+                }
             }
         }
     }
@@ -199,6 +184,7 @@ class EventHandler implements Listener{
      * @param PlayerInteractEvent $event
      *
      * @priority HIGH
+     * @return bool
      */
     public function onBlockTap(PlayerInteractEvent $event){
         $player = $event->getPlayer();
@@ -207,7 +193,7 @@ class EventHandler implements Listener{
 
         //PowerTool
         if($item->isPlaceable()){
-            if($this->api->executePowerTool($player, $item)){
+            if($this->plugin->executePowerTool($player, $item)){
                 $event->setCancelled(true);
             }
         }
@@ -283,18 +269,18 @@ class EventHandler implements Listener{
                     $player->sendMessage($message);
                 }else{
                     if(($v = $text[1]) === "Hand"){
-                        if($this->api->isReparable($item = $player->getInventory()->getItemInHand())){
+                        if($this->plugin->isReparable($item = $player->getInventory()->getItemInHand())){
                             $item->setDamage(0);
                             $player->sendMessage(TextFormat::GREEN . "Item successfully repaired!");
                         }
                     }elseif($v === "All"){
                         foreach($player->getInventory()->getContents() as $item){
-                            if($this->api->isReparable($item)){
+                            if($this->plugin->isReparable($item)){
                                 $item->setDamage(0);
                             }
                         }
                         foreach($player->getInventory()->getArmorContents() as $item){
-                            if($this->api->isReparable($item)){
+                            if($this->plugin->isReparable($item)){
                                 $item->setDamage(0);
                             }
                         }
@@ -329,6 +315,17 @@ class EventHandler implements Listener{
                     $player->sendMessage(TextFormat::GREEN . "Teleporting to " . TextFormat::AQUA . $x . TextFormat::GREEN . ", " . TextFormat::AQUA . $y . TextFormat::GREEN . ", " . TextFormat::AQUA . $z);
                 }
             }
+
+            //Warp sign
+            elseif($text[0] === "[Warp]"){
+                $event->setCancelled(true);
+                if(!$player->hasPermission($perm . "warp")){
+                    $player->sendMessage($message);
+                }else{
+                    $this->plugin->warpPlayer($player, $text[1]);
+                    $player->sendMessage(TextFormat::GREEN . "Teleporting...");
+                }
+            }
         }
         return true;
     }
@@ -344,12 +341,12 @@ class EventHandler implements Listener{
         $block = $event->getBlock();
 
         //PowerTool
-        if($this->api->executePowerTool($player, $item)){
+        if($this->plugin->executePowerTool($player, $item)){
             $event->setCancelled(true);
         }
 
         //Unlimited block placing
-        elseif($this->api->isUnlimitedEnabled($player)){
+        elseif($this->plugin->isUnlimitedEnabled($player)){
             $event->setCancelled(true);
             $pos = new Vector3($event->getBlockReplaced()->getX(), $event->getBlockReplaced()->getY(), $event->getBlockReplaced()->getZ());
             $player->getLevel()->setBlock($pos, $block, true);
@@ -403,6 +400,12 @@ class EventHandler implements Listener{
                 $event->setCancelled(true);
                 $player->sendMessage($message);
             }
+
+            //Warp sign
+            elseif($text[0] === "[warp]" && !$player->hasPermission($perm . "warp")){
+                $event->setCancelled(true);
+                $player->sendMessage($message);
+            }
         }
     }
 
@@ -410,10 +413,10 @@ class EventHandler implements Listener{
         $player = $event->getPlayer();
         //Colored Sign
         if($player->hasPermission("essentials.sign.color")){
-            $event->setLine(0, $this->api->colorMessage($event->getLine(0)));
-            $event->setLine(1, $this->api->colorMessage($event->getLine(1)));
-            $event->setLine(2, $this->api->colorMessage($event->getLine(2)));
-            $event->setLine(3, $this->api->colorMessage($event->getLine(3)));
+            $event->setLine(0, $this->plugin->colorMessage($event->getLine(0)));
+            $event->setLine(1, $this->plugin->colorMessage($event->getLine(1)));
+            $event->setLine(2, $this->plugin->colorMessage($event->getLine(2)));
+            $event->setLine(3, $this->plugin->colorMessage($event->getLine(3)));
         }
 
         //Special Signs
@@ -425,7 +428,7 @@ class EventHandler implements Listener{
 
                 $item_name = $event->getLine(1);
 
-                if(trim($event->getLine(2)) !== "" || $event->getLine(2) !== null){
+                if((trim($event->getLine(2)) !== "" || $event->getLine(2) !== null) && is_numeric($event->getLine(2))){
                     $damage = $event->getLine(2);
                 }else{
                     $damage = 0;
@@ -535,9 +538,18 @@ class EventHandler implements Listener{
             }else{
                 $player->sendMessage(TextFormat::GREEN . "Teleport sign successfully created!");
                 $event->setLine(0, "[Teleport]");
-                $event->setLine(1, $event->getLine(1));
-                $event->setLine(2, $event->getLine(2));
-                $event->setLine(3, $event->getLine(3));
+            }
+        }
+
+        //Warp sign
+        elseif(strtolower($event->getLine(0)) === "[warp]" && $player->hasPermission($perm . "warp")){
+            //TODO Create sign
+            if(!$this->plugin->warpExist($event->getLine(1))){
+                $player->sendMessage(TextFormat::RED . "[Error] Warp not found");
+                $event->setCancelled(true);
+            }else{
+                $player->sendMessage(TextFormat::GREEN . "Warp sign successfully created!");
+                $event->setLine(0, "[Warp]");
             }
         }
         return true;
@@ -550,10 +562,10 @@ class EventHandler implements Listener{
         $entity = $event->getEntity();
         if($entity instanceof Player){
             //Invsee
-            if($this->api->isPlayerWatchingOtherInventory($entity)){
+            if($this->plugin->isPlayerWatchingOtherInventory($entity)){
                 if(!$entity->hasPermission("essentials.invsee.modify")){
                     $event->setCancelled(true);
-                }elseif(($player = $this->api->getInventoryOwner($entity)) !== false){
+                }elseif(($player = $this->plugin->getInventoryOwner($entity)) !== false){
                     if($player->hasPermission("essentials.invsee.preventmodify")){
                         $event->setCancelled(true);
                     }else{
@@ -561,7 +573,7 @@ class EventHandler implements Listener{
                         //TODO Sync changes
                     }
                 }
-            }elseif(($player = $this->api->isOtherWatchingPlayerInventory($entity))){
+            }elseif(($player = $this->plugin->isOtherWatchingPlayerInventory($entity))){
                 if($entity->hasPermission("essentials.invsee.preventmodify")){
                     $event->setCancelled(true);
                 }elseif(!$player->hasPermission("essentials.invsee.modify")){

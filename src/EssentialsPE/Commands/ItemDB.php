@@ -24,7 +24,7 @@ class ItemDB extends BaseCommand{
         $item = $sender->getInventory()->getItemInHand();
         switch(count($args)){
             case 0:
-                $sender->sendMessage(TextFormat::AQUA . "This item " . ($this->getAPI()->isReparable($item) ? "has " . TextFormat::RED . $item->getDamage() . TextFormat::AQUA . " points of damage" : "metadata is " . TextFormat::RED . $item->getDamage()));
+                $sender->sendMessage(TextFormat::AQUA . "This item " . ($this->getPlugin()->isReparable($item) ? "has " . TextFormat::RED . $item->getDamage() . TextFormat::AQUA . " points of damage" : "metadata is " . TextFormat::RED . $item->getDamage()));
                 break;
             case 1:
                 switch(strtolower($args)){
@@ -38,7 +38,7 @@ class ItemDB extends BaseCommand{
                     case "dura":
                     case "metadata":
                     case "meta":
-                        $sender->sendMessage(TextFormat::AQUA . "This item " . ($this->getAPI()->isReparable($item) ? "has " . TextFormat::RED . $item->getDamage() . TextFormat::AQUA . " points of damage" : "metadata is " . TextFormat::RED . $item->getDamage()));
+                        $sender->sendMessage(TextFormat::AQUA . "This item " . ($this->getPlugin()->isReparable($item) ? "has " . TextFormat::RED . $item->getDamage() . TextFormat::AQUA . " points of damage" : "metadata is " . TextFormat::RED . $item->getDamage()));
                         break;
                 }
                 break;

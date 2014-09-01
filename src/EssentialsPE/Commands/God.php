@@ -23,22 +23,22 @@ class God extends BaseCommand{
                     $sender->sendMessage(TextFormat::RED . "Usage: /god <player>");
                     return false;
                 }
-                $this->getAPI()->switchGodMode($sender);
-                $sender->sendMessage(TextFormat::AQUA . "God mode " . $this->getAPI()->isGod($sender) ? "enabled!" : "disabled");
+                $this->getPlugin()->switchGodMode($sender);
+                $sender->sendMessage(TextFormat::AQUA . "God mode " . $this->getPlugin()->isGod($sender) ? "enabled!" : "disabled");
                 break;
             case 1:
                 if(!$sender->hasPermission("essentials.god.other")){
                     $sender->sendMessage(TextFormat::RED . $this->getPermissionMessage());
                     return false;
                 }
-                $player = $this->getAPI()->getPlayer($args[0]);
+                $player = $this->getPlugin()->getPlayer($args[0]);
                 if($player === false){
                     $sender->sendMessage(TextFormat::RED . "[Error] Player not found");
                     return false;
                 }
-                $this->getAPI()->switchGodMode($player);
-                $sender->sendMessage(TextFormat::AQUA . "God mode " . ($this->getAPI()->isGod($player) ? "enabled" : "disabled") . "for $args[0]");
-                $player->sendMessage(TextFormat::AQUA . "God mode " . $this->getAPI()->isGod($player) ? "enabled!" : "disabled");
+                $this->getPlugin()->switchGodMode($player);
+                $sender->sendMessage(TextFormat::AQUA . "God mode " . ($this->getPlugin()->isGod($player) ? "enabled" : "disabled") . "for $args[0]");
+                $player->sendMessage(TextFormat::AQUA . "God mode " . $this->getPlugin()->isGod($player) ? "enabled!" : "disabled");
                 break;
             default:
                 $sender->sendMessage(TextFormat::RED . $sender instanceof Player ? $this->getUsage() : "Usage: /god <player>");

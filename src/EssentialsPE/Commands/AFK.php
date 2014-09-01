@@ -23,8 +23,8 @@ class AFK extends BaseCommand{
                     $sender->sendMessage(TextFormat::RED . "Usage: /afk <player>");
                     return false;
                 }
-                $this->getAPI()->switchAFKMode($sender);
-                if(!$this->getAPI()->isAFK($sender)){
+                $this->getPlugin()->switchAFKMode($sender);
+                if(!$this->getPlugin()->isAFK($sender)){
                     $sender->sendMessage(TextFormat::YELLOW . "You're no longer AFK");
                     $this->broadcastAFKStatus($sender, "is no longer AFK");
                 }else{
@@ -37,13 +37,13 @@ class AFK extends BaseCommand{
                     $sender->sendMessage(TextFormat::RED . $this->getPermissionMessage());
                     return false;
                 }
-                $player = $this->getAPI()->getPlayer($args[0]);
+                $player = $this->getPlugin()->getPlayer($args[0]);
                 if(!$player instanceof Player){
                     $sender->sendMessage(TextFormat::RED . "[Error] Player not found");
                     return false;
                 }
-                $this->getAPI()->switchAFKMode($player);
-                if(!$this->getAPI()->isAFK($player)){
+                $this->getPlugin()->switchAFKMode($player);
+                if(!$this->getPlugin()->isAFK($player)){
                     $player->sendMessage(TextFormat::YELLOW . "You're no longer AFK");
                     $this->broadcastAFKStatus($player, "is no longer AFK");
                 }else{
