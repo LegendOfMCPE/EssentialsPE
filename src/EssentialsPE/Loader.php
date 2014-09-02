@@ -55,14 +55,13 @@ use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
 
 class Loader extends PluginBase{
-    public $path;
     /** @var  \SQLite3 */
     public $warps;
 
     public function onEnable(){
         @mkdir($this->getDataFolder());
         $this->checkConfig();
-        $this->enableDataBases();
+        //$this->enableDataBases();
 	    $this->getLogger()->info(TextFormat::YELLOW . "Loading...");
         $this->getServer()->getPluginManager()->registerEvents(new EventHandler($this), $this);
         $this->registerCommands();
@@ -158,8 +157,8 @@ class Loader extends PluginBase{
 
     public function enableDataBases(){
         if(!file_exists($this->getDataFolder() . "warps.db")){
-            $this->warps = new \SQLite3($this->getDataFolder() . "warps.db");
-            $this->warps->exec('CREATE TABLE warps ( name TEXT PRIMARY KEY, x INTEGER, y INTEGER, z INTEGER )', SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
+            $this->warps = new \SQLite3($this->getDataFolder() . "warps.db", SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
+            $this->warps->exec(stream_get_contents($this->getResource("warps.sql")));
         }else{
             $this->warps = new \SQLite3($this->getDataFolder() . "warps.db", SQLITE3_OPEN_READWRITE);
         }

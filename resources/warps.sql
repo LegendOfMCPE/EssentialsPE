@@ -1,0 +1,6 @@
+CREATE TABLE warps (
+  name TEXT PRIMARY KEY,
+  x INTEGER,
+  y INTEGER,
+  z INTEGER
+);
