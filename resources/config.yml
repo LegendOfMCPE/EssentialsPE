@@ -1,16 +1,16 @@
-#EssentialsPE configuration
-#This configuration flie let you modify how EssentialsPE work with some features
+# EssentialsPE configuration
+# This configuration flie let you modify how EssentialsPE work with some features
 
-#This option let you disable player damage when they're AFK
+# This option let you disable player damage when they're AFK
 safe-afk: true
-#Time until the server kick an AFK player (in seconds)
-#Set it to -1 for not timeout
+# Time until the server kick an AFK player (in seconds)
+# Set it to -1 for not timeout
 auto-afk-kick: 300
 
-#Let you configure the size of a stack that players (with permission) can get (via /more or /item)
+# Let you configure the size of a stack that players (with permission) can get (via /more or /item)
 oversized-stacks: 64
 
-#Let you set a limit for the /near command to search for players (in Meters)
+# Let you set a limit for the /near command to search for players (in Meters)
 near-radius-limit: 200
-#Let you set a default value to search for players (it can't be higher than the default limit)
+# Let you set a default value to search for players (it can't be higher than the default limit)
 near-default-radius: 200
