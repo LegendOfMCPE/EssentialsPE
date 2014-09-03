@@ -6,6 +6,7 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityInventoryChangeEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\entity\EntityMoveEvent;
@@ -150,13 +151,13 @@ class EventHandler implements Listener{
     }
 
     /**
-     * @param EntityDamageByEntityEvent $event
+     * @param EntityDamageEvent $event
      *
      * @priority HIGH
      */
-    public function onEntityDamageByEntity(EntityDamageByEntityEvent $event){
+    public function onEntityDamageByEntity(EntityDamageEvent $event){
         $victim = $event->getEntity();
-        if($event->getEventName() === "EntityDamageByEntityEvent"){
+        if($event instanceof EntityDamageByEntityEvent){
             $issuer = $event->getDamager();
             if($victim instanceof Player && $issuer instanceof Player){
                 if($this->plugin->isGod($victim)){
