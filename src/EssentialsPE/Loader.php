@@ -61,7 +61,7 @@ class Loader extends PluginBase{
     public function onEnable(){
         @mkdir($this->getDataFolder());
         $this->checkConfig();
-        //$this->enableDataBases();
+        //$this->enableDatabases();
 	    $this->getLogger()->info(TextFormat::YELLOW . "Loading...");
         $this->getServer()->getPluginManager()->registerEvents(new EventHandler($this), $this);
         $this->registerCommands();
@@ -155,7 +155,7 @@ class Loader extends PluginBase{
         $cfg->reload();
     }
 
-    public function enableDataBases(){
+    public function enableDatabases(){
         if(!file_exists($this->getDataFolder() . "warps.db")){
             $this->warps = new \SQLite3($this->getDataFolder() . "warps.db", SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
             $this->warps->exec(stream_get_contents($this->getResource("warps.sql")));
