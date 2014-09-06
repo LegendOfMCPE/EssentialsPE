@@ -174,7 +174,7 @@ class EventHandler implements Listener{
                     $issuer->sendMessage(TextFormat::RED . "You have PvP disabled!");
                     $event->setCancelled(true);
                 }elseif(!$this->plugin->isPvPEnabled($victim)){
-                    $issuer->sendMessage(TextFormat::RED . $victim->getDisplayName() . " have PvP disabled!");
+                    $issuer->sendMessage(TextFormat::RED . $victim->getDisplayName() . " has PvP disabled!");
                     $event->setCancelled(true);
                 }
             }
