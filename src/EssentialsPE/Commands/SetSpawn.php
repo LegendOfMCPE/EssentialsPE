@@ -19,6 +19,9 @@ class SetSpawn extends BaseCommand{
             $sender->sendMessage(TextFormat::RED . "Please run this command in-game.");
             return false;
         }
+        if(!$this->testPermission($sender)){
+            return false;
+        }
         if(count($args) != 0){
             $sender->sendMessage(TextFormat::RED . $this->getUsage());
             return false;
