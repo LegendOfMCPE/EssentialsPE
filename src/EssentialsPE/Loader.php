@@ -140,8 +140,8 @@ class Loader extends PluginBase{
         $cmdmap->registerAll("essentialspe", [
             new AFK($this),
             new Back($this),
-            //new BigTreeCommand($this),
-            //new BreakCommand($this), //TODO (Unhandled exception?)
+            new BigTreeCommand($this),
+            new BreakCommand($this),
             new Broadcast($this),
             new Burn($this),
             new ClearInventory($this),
@@ -155,7 +155,7 @@ class Loader extends PluginBase{
             new Heal($this),
             new ItemCommand($this),
             new ItemDB($this),
-            //new Jump($this), //TODO (Unhandled exception?)
+            new Jump($this),
             new KickAll($this),
             new Kill($this),
             new More($this),
@@ -173,7 +173,7 @@ class Loader extends PluginBase{
             new Suicide($this),
             new TempBan($this),
             new Top($this),
-            //new TreeCommand($this),
+            new TreeCommand($this),
             new Unlimited($this),
             new Vanish($this),
             new World($this),

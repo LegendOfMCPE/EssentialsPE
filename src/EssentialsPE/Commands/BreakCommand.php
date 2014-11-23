@@ -28,6 +28,7 @@ class BreakCommand extends BaseCommand{
             return false;
         }
         $transparent = [0, 7, 8, 9, 10];
+		// [EXCEPTION_INFO] Only variables should be passed by reference in PocketMine-MP\src\pocketmine\entity\Living.php on line 237
         $block = $sender->getTargetBlock(100, $transparent);
         if($block === null){
             $sender->sendMessage(TextFormat::RED . "There isn't a reachable block");

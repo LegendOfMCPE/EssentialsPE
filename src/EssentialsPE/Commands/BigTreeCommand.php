@@ -28,6 +28,7 @@ class BigTreeCommand extends BaseCommand{
             return false;
         }
         $transparent = [];
+		// [EXCEPTION_INFO] Only variables should be passed by reference in PocketMine-MP\src\pocketmine\entity\Living.php on line 237
         $block = $sender->getTargetBlock(100, $transparent);
         while(!$block->isSolid){
             if($block === null){
