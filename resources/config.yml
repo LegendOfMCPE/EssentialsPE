@@ -17,3 +17,19 @@ near-default-radius: 200
 
 # This option let you enable color codes in the server, but keep in mind that the client may not support them
 enable-custom-colors: false
+
+updater:
+  update-checks: # this is about the subcommand `/essentials update check`
+    # currently, we only check releases and pre-releases
+    - channel: release # this must be one of "release" or "pre-release"
+      actions:
+        # The following lines will be done in order.
+        # Add, modify or remove the lines to change.
+        # Each line must be one of "notify-console", "notify-ops", "download", "install&stop"
+        # "install&stop" must be run after "download"
+        - notify-console
+        - notify-ops # this notifies all online players with the permission essentials.essentials.notifyupdate
+        - download
+    - channel: pre-release
+      actions:
+        - notify-console
