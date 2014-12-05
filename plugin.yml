@@ -79,6 +79,15 @@ permissions:
                     essentials.essentials.reload:
                         default: op
                         description: "Let you reload the config file of EssentialsPE"
+                    essentials.essentials.update:
+                        default: op
+                        description: "Trigger EssentialsPE updater"
+                    essentials.essentials.updatecheck:
+                        default: op
+                        description: "Trigger EssentialsPe update checker"
+                    essentials.essentials.notifyupdate:
+                        default: op
+                        description: "Only players with this permission are notified in the notify-ops action for updater"
             essentials.extinguish:
                 default: op
                 description: "Extinguish a player"

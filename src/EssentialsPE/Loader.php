@@ -79,8 +79,9 @@ class Loader extends PluginBase{
 
     /** @var Config */
     public $warps;
-
-    public function onEnable(){
+	/** @var UpdateChecker[]|null */
+	private $checkers = null;
+	public function onEnable(){
         @mkdir($this->getDataFolder());
         $this->checkConfig();
         $this->saveConfigs();
@@ -96,7 +97,6 @@ class Loader extends PluginBase{
             $this->createSession($p);
         }
     }
-
     public function onDisable(){
         foreach($this->getServer()->getOnlinePlayers() as $p){
             //Nicks
@@ -111,6 +111,13 @@ class Loader extends PluginBase{
             $this->removeSession($p);
         }
     }
+	/**
+	 * This method is to make the getFile() method public
+	 * @return string
+	 */
+	public function getFile(){
+		return parent::getFile();
+	}
 
     /**
      * Function to easily disable commands
@@ -204,6 +211,7 @@ class Loader extends PluginBase{
     public function checkConfig(){
         $this->saveDefaultConfig();
         $cfg = $this->getConfig();
+	    $cfg->reload();
 
         $booleans = ["safe-afk", "enable-custom-colors"];
         foreach($booleans as $key){
@@ -242,13 +250,25 @@ class Loader extends PluginBase{
         }
 
         $cfg->save();
-        $cfg->reload();
+//        $cfg->reload(); // no need to do so
+	    return $cfg;
     }
 
     private function saveConfigs(){
         $this->homes = new Config($this->getDataFolder() . "Homes.yml", Config::YAML);
         $this->warps = new Config($this->getDataFolder() . "Warps.yml", Config::YAML);
     }
+
+	public function getUpdateCheckers(){
+		if($this->checkers === null){
+			$updater = $this->checkConfig()->get("updater");
+			$this->checkers = [];
+			foreach($updater["update-checkers"] as $checker){
+				$this->checkers[] = new UpdateChecker($this, $checker, $this->getDescription()->getVersion());
+			}
+		}
+		return $this->checkers;
+	}
 
     /*
      *  .----------------.  .----------------.  .----------------.

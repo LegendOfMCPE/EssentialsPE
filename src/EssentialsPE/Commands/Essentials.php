@@ -3,13 +3,14 @@ namespace EssentialsPE\Commands;
 
 use EssentialsPE\BaseCommand;
 use EssentialsPE\Loader;
+use EssentialsPE\Tasks\UpdateTask;
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
 class Essentials extends BaseCommand{
     public function __construct(Loader $plugin){
-        parent::__construct($plugin, "essentials", "Get current Essentials version", "/essentials [reload]", ["ess"]);
+        parent::__construct($plugin, "essentials", "Get current Essentials version", "/essentials [reload|update]", ["ess"]);
         $this->setPermission("essential.essentials");
     }
 
@@ -31,9 +32,9 @@ class Essentials extends BaseCommand{
                         $this->getPlugin()->checkConfig();
                         $sender->sendMessage(TextFormat::AQUA . "Config successfully reloaded!");
                         break;
-                    /*case "update":
-                        //TODO
-                        break;*/
+                    case "update":
+                        $this->update($sender);
+                        break;
                     default:
                         $sender->sendMessage(TextFormat::RED . ($sender instanceof Player ? "" : "Usage: ") . $this->getUsage());
                         return false;
@@ -47,4 +48,8 @@ class Essentials extends BaseCommand{
         }
         return true;
     }
+	public function update(CommandSender $recipient){
+		$task = new UpdateTask($this->getPlugin()->getUpdateCheckers(), $recipient, $this->getPlugin());
+		$this->getPlugin()->getServer()->getScheduler()->scheduleAsyncTask($task);
+	}
 }
