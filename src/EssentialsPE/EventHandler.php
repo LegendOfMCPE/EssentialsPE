@@ -21,6 +21,7 @@ use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\server\ServerCommandEvent;
 use pocketmine\item\Item;
+use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\tile\Sign;
@@ -173,7 +174,7 @@ class EventHandler implements Listener{
     public function onPlayerSleep(PlayerBedEnterEvent $event){
         $player = $event->getPlayer();
         if($player->hasPermission("essentials.home.bed")){
-            $this->plugin->setHome($player, "bed", $player->getFloorX(), $player->getFloorY(), $player->getFloorZ(), $player->getLevel()->getName());
+            $this->plugin->setHome($player, "bed", new Position($player->getFloorX(), $player->getFloorY(), $player->getFloorZ(), $player->getLevel()));
         }
     }
 
