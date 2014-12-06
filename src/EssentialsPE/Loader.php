@@ -415,18 +415,28 @@ class Loader extends PluginBase{
         "afk" => [
             "mode" => false,
             "kick-taskID" => false,
-            "auto-taskID" => false,
+            "auto-taskID" => false
         ],
         "back" => [
             "position" => false,
-            "rotation" => false,
+            "rotation" => false
         ],
         "god" => false,
         "powertool" => [
             "commands" => false,
-            "chat-macro" => false,
+            "chat-macro" => false
         ],
         "pvp" => false,
+        "tprequests" => [
+            "request_to" => [
+                "player" => false,
+                "action" => false,
+            ],
+            "request_from" => [
+                "player" => false,
+                "action" => false
+            ]
+        ],
         "unlimited" => false,
         "vanish" => false
     ];
@@ -1185,6 +1195,35 @@ class Loader extends PluginBase{
     public function isPvPEnabled(Player $player){
         return $this->getSession($player, "pvp");
     }
+
+    /**  _______ _____  _____                           _
+     *  |__   __|  __ \|  __ \                         | |
+     *     | |  | |__) | |__) |___  __ _ _   _  ___ ___| |_ ___
+     *     | |  |  ___/|  _  // _ \/ _` | | | |/ _ / __| __/ __|
+     *     | |  | |    | | \ |  __| (_| | |_| |  __\__ | |_\__ \
+     *     |_|  |_|    |_|  \_\___|\__, |\__,_|\___|___/\__|___/
+     *                                | |
+     *                                |_|
+     */
+
+    public function hasARequest(Player $player){
+        //Return the name of the requester
+        //Ex: $name -> $player
+    }
+
+    public function madeARequest(Player $player){
+        //Return the name of the player that requested to
+        //Ex: $player -> $name
+    }
+
+    public function requestTPTo(Player $requester, Player $target){
+        //Make a tp request to bring $requester to the position of $target
+    }
+
+    public function requestTPHere(Player $requester, Player $target){
+        //Make a tp request to bring $target to the position of $requester
+    }
+
 
     /**  _    _       _ _           _ _           _   _____ _
      *  | |  | |     | (_)         (_| |         | | |_   _| |
