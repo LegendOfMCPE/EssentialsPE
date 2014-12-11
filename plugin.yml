@@ -9,14 +9,14 @@ website: https://github.com/LegendOfMCPE/EssentialsPE
 permissions:
     essentials:
         default: op
-        description: "Allow to access to every EssentialsPE feature"
+        description: "Allow you to access to every EssentialsPE feature"
         children:
             essentials.ban.exempt:
                 default: op
-                description: "Prevent the player from being banned"
+                description: "Prevents the player from being banned"
             essentials.colorchat:
                 default: op
-                description: "Allow to chat using colors!"
+                description: "Allow you to chat using colors!"
             essentials.afk:
                 default: true
                 description: "Toggle the AFK status"
@@ -138,7 +138,7 @@ permissions:
                         description: "Set a home where you last sleep"
             essentials.item:
                 default: op
-                description: "Gives yourself an item"
+                description: "Gives you an item"
             essentials.itemdb:
                 default: op
                 description: "Let's you see information attached to an item"
@@ -154,10 +154,10 @@ permissions:
                     #    description: "Allow the spawning of blacklisted items"
             essentials.jump:
                 default: op
-                description: "Teleport you to the block you're looking at"
+                description: "Teleports you to the block you're looking at"
             essentials.kickall:
                 default: op
-                description: "Kick all the online players except the sender"
+                description: "Let's you Kick all the online players except the sender"
             essentials.kill:
                 default: op
                 description: "Kill other players"
