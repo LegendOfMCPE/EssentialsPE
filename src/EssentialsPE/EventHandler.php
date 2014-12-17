@@ -408,6 +408,7 @@ class EventHandler implements Listener{
         $perm = "essentials.sign.break.";
 
         $tile = $block->getLevel()->getTile(new Vector3($block->getFloorX(), $block->getFloorY(), $block->getFloorZ()));
+        $tile2 = $block->getLevel()->getTile(new Vector3($block->getFloorX(), ($block->getFloorY()+1), $block->getFloorZ()));
         if($tile instanceof Sign){
             $text = $tile->getText();
             $message = TextFormat::RED . "You don't have permissions to break this sign";
@@ -449,6 +450,55 @@ class EventHandler implements Listener{
             }
 
             // Warp sign
+            elseif($text[0] === "[Warp]" && !$player->hasPermission($perm . "warp")){
+                $event->setCancelled(true);
+                $player->sendMessage($message);
+            }
+        }
+
+        //check block above it  you can edit this to be more compact but make sure you check it tile-getText is not null otherwise it will crash server ;)
+        //advocaite ;)
+        if($tile2 instanceof Sign){
+            $text = $tile2->getText();
+            $message = TextFormat::RED . "You don't have permissions to break this sign";
+
+            //Free sign
+            if($text[0] === "[Free]" && !$player->hasPermission($perm . "free")){
+                $event->setCancelled(true);
+                $player->sendMessage($message);
+            }
+
+            //Gamemode sign
+            elseif($text[0] === "[Gamemode]" && !$player->hasPermission($perm . "gamemode")){
+                $event->setCancelled(true);
+                $player->sendMessage($message);
+            }
+
+            //Heal sign
+            elseif($text[0] === "[Heal]" && !$player->hasPermission($perm . "heal")){
+                $event->setCancelled(true);
+                $player->sendMessage($message);
+            }
+
+            //Repair sign
+            elseif($text[0] === "[Repair]" && !$player->hasPermission($perm . "repair")){
+                $event->setCancelled(true);
+                $player->sendMessage($message);
+            }
+
+            //Time sign
+            elseif($text[0] === "[Time]" && !$player->hasPermission($perm . "time")){
+                $event->setCancelled(true);
+                $player->sendMessage($message);
+            }
+
+            //Teleport sign
+            elseif($text[0] === "[Teleport]" && !$player->hasPermission($perm . "teleport")){
+                $event->setCancelled(true);
+                $player->sendMessage($message);
+            }
+
+            //Warp sign
             elseif($text[0] === "[Warp]" && !$player->hasPermission($perm . "warp")){
                 $event->setCancelled(true);
                 $player->sendMessage($message);
