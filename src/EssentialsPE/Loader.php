@@ -144,74 +144,16 @@ class Loader extends PluginBase{
            //"gamemode", // TODO: ReWrite
             "kill"
         ]);
+        $commands = [];
+        $regex = new \RegexIterator(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->getFile() . "/src/" . __NAMESPACE__ . "/Commands/")), '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
+        foreach ($regex as $file) {
+            $class = str_replace("/", "\\", substr($file[0], strpos($file[0], __NAMESPACE__ . "/Commands/"), -4));
+            $commands[] = new $class($this);
+        }
 
         //Register the new commands
         $cmdmap = $this->getServer()->getCommandMap();
-        $cmdmap->registerAll("essentialspe", [
-            new AFK($this),
-            new Back($this),
-            //new BigTreeCommand($this), //TODO
-            new BreakCommand($this),
-            new Broadcast($this),
-            new Burn($this),
-            new ClearInventory($this),
-            new Compass($this),
-            new Depth($this),
-            new EssentialsPE($this),
-            new Extinguish($this),
-            new GetPos($this),
-            new God($this),
-            new Heal($this),
-            new ItemCommand($this),
-            new ItemDB($this),
-            new Jump($this),
-            new KickAll($this),
-            new More($this),
-            new Mute($this),
-            new Near($this),
-            new Nick($this),
-            new Nuke($this),
-            new PvP($this),
-            new RealName($this),
-            new Repair($this),
-            new Seen($this),
-            new SetSpawn($this),
-            new Spawn($this),
-            new Sudo($this),
-            new Suicide($this),
-            new TempBan($this),
-            new Top($this),
-            //new TreeCommand($this), //TODO
-            new Unlimited($this),
-            new Vanish($this),
-            new World($this),
-
-            //Home
-            new DelHome($this),
-            new Home($this),
-            new SetHome($this),
-
-            //PowerTool
-            new PowerTool($this),
-            new PowerToolToggle($this),
-
-            //Teleport
-            new TPA($this),
-            new TPAccept($this),
-            new TPAHere($this),
-            new TPAll($this),
-            new TPDeny($this),
-            new TPHere($this),
-
-            //Warp
-            new DelWarp($this),
-            new Setwarp($this),
-            new Warp($this),
-
-            //Override
-            //new Gamemode($this), // TODO: ReWrite
-            new Kill($this)
-        ]);
+        $cmdmap->registerAll("essentialspe", $commands);
     }
 
     public function checkConfig(){
