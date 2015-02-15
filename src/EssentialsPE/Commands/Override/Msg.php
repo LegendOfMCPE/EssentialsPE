@@ -11,7 +11,7 @@ use pocketmine\utils\TextFormat;
 
 class Msg extends BaseCommand{
     public function __construct(Loader $plugin){
-        parent::__construct($plugin, "Msg", "Send private messages to other players", "/msg <player> <message ...>", ["tell", "m", "t", "whisper"]);
+        parent::__construct($plugin, "Msg", "Send private messages to other players", "/msg <player> <message ...>", ["tell", "m", "t", "whisper", "w"]);
         $this->setPermission("essentials.msg");
     }
 
