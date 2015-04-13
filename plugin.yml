@@ -415,9 +415,13 @@ permissions:
                     essentials.warp.other:
                         default: op
                         description: "Teleport other players to a warp"
-            essentials.world:
+            essentials.world.*:
                 default: op
                 description: "Teleport to another world"
+                children:
+                    essentials.world:
+                        default: op
+                        description: "Teleport to another world"
             essentials.worth:
                 default: true
                 description: "Get the price of an item"
