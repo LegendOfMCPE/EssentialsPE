@@ -28,6 +28,9 @@ near-default-radius: 200
 # This option let you enable color codes in the server, but keep in mind that the client may not support them
 enable-custom-colors: false
 
+# This option let you enable EssentialsPE join/leave messages
+enable-join-leave-messages: false
+
 # These options will let you configure how the auto-updater will work
 updater:
   # Enable the AUTOMATIC updater
