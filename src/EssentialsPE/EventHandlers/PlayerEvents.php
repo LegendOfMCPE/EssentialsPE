@@ -48,9 +48,11 @@ class PlayerEvents implements Listener{
      * @param PlayerJoinEvent $event
      */
     public function onPlayerJoin(PlayerJoinEvent $event){
+        //EssentialsPE join messages + CustomAlerts fix
+        if($this->plugin->getConfig()->getAll()["enable-join-leave-messages"] && !$this->plugin->getServer()->getPluginManager()->getPlugin("CustomAlerts")){
         // Nick and NameTag set:
         $event->setJoinMessage(str_replace($event->getPlayer()->getName(), $event->getPlayer()->getDisplayName(), $event->getJoinMessage()));
-
+}
         // Hide vanished players | TODO: Remove
         /*foreach($event->getPlayer()->getServer()->getOnlinePlayers() as $p){
             if($this->plugin->isVanished($p)){
@@ -64,8 +66,11 @@ class PlayerEvents implements Listener{
      * @param PlayerQuitEvent $event
      */
     public function onPlayerQuit(PlayerQuitEvent $event){
+          //EssentialsPE leave messages + CustomAlerts fix
+        if($this->plugin->getConfig()->getAll()["enable-join-leave-messages"] && !$this->plugin->getServer()->getPluginManager()->getPlugin("CustomAlerts")){
         // Quit message (nick):
         $event->setQuitMessage(str_replace($event->getPlayer()->getName(), $event->getPlayer()->getDisplayName(),$event->getQuitMessage()));
+}
         // Nick and NameTag restore:
         $this->plugin->setNick($event->getPlayer(), $event->getPlayer()->getName(), false);
 
