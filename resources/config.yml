@@ -29,7 +29,7 @@ near-radius-limit: 200
 near-default-radius: 200
 
 # This option let you enable color codes in the server, but keep in mind that the client may not support them
-enable-custom-colors: false
+enable-custom-colors: true
 
 # These options will let you configure how the auto-updater will work
 updater:
