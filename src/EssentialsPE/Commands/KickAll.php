@@ -25,15 +25,15 @@ class KickAll extends BaseCommand{
         if(!$this->testPermission($sender)){
             return false;
         }
+        if(count($this->getServer()->getOnlinePlayers()) < 1){
+	    $sender->sendMessage(TextFormat::RED . "There is no players on the server!");
+            return true;
+	}
         if(count($args) < 1){
             $reason = "Unknown";
         }else{
             $reason = implode(" ", $args);
         }
-        if(count($this->getServer()->getOnlinePlayers()) < 1){
-			$sender->sendMessage(TextFormat::RED . "On the server there is no player!");
-            return true;
-		}
         foreach($sender->getServer()->getOnlinePlayers() as $p){
             if($p != $sender){
                 $p->kick($reason, false);
