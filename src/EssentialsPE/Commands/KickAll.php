@@ -30,6 +30,10 @@ class KickAll extends BaseCommand{
         }else{
             $reason = implode(" ", $args);
         }
+        if(count($this->getServer()->getOnlinePlayers()) < 1){
+			$sender->sendMessage(TextFormat::RED . "On the server there is no player!");
+            return true;
+		}
         foreach($sender->getServer()->getOnlinePlayers() as $p){
             if($p != $sender){
                 $p->kick($reason, false);
