@@ -34,19 +34,23 @@ class Gamemode extends BaseCommand{
             switch(strtolower($alias)){
                 case "survival":
                 case "gms":
+                case "0":
                     $args[0] = "survival";
                     break;
                 case "creative":
                 case "gmc":
+                case "1":
                     $args[0] = "creative";
                     break;
                 case "adventure":
                 case "gma":
+                case "2":
                     $args[0] = "adventure";
                     break;
                 case "spectator":
                 case "viewer":
                 case "gmt":
+                case "3":
                     $args[0] = "spectator";
                     break;
                 default:
@@ -92,14 +96,17 @@ class Gamemode extends BaseCommand{
             switch(strtolower($args[0])){
                 case "survival":
                 case "s":
+                case "0":
                     $gm = 0;
                     break;
                 case "creative":
                 case "c":
+                case "1":
                     $gm = 1;
                     break;
                 case "adventure":
                 case "a":
+                case "2":
                     $gm = 2;
                     break;
                 case "spectator":
@@ -107,6 +114,7 @@ class Gamemode extends BaseCommand{
                 case "view":
                 case "v":
                 case "t":
+                case "3":
                     $gm = 3;
                     break;
                 default:
