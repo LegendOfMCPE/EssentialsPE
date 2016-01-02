@@ -241,7 +241,7 @@ class Loader extends PluginBase{
 
         if(!$cfg->exists("version") || $cfg->get("version") !== "0.0.2"){
             $this->getLogger()->debug(TextFormat::RED . "An invalid config file was found, generating a new one...");
-            unlink($this->getDataFolder() . "config.yml");
+            rename($this->getDataFolder() . "config.yml", $this->getDataFolder() . "invalid-config.yml");
             $this->saveDefaultConfig();
             $cfg = $this->getConfig();
         }
