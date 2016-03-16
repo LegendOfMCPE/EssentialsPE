@@ -1393,9 +1393,9 @@ class BaseAPI{
      */
     public function executePowerTool(Player $player, Item $item){
         $command = false;
-        if($this->getPowerToolItemCommand($player, $item) !== false){
+        if($this->getPowerToolItemCommand($player, $item) !== null){
             $command = $this->getPowerToolItemCommand($player, $item);
-        }elseif($this->getPowerToolItemCommands($player, $item) !== false){
+        }elseif($this->getPowerToolItemCommands($player, $item) !== null){
             $command = $this->getPowerToolItemCommands($player, $item);
         }
         if($command !== false){
