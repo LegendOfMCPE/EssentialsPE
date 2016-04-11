@@ -726,7 +726,7 @@ class BaseAPI{
     /**
      * @param string $location
      */
-    public function setServerGeoLocation(string $location){
+    public function setServerGeoLocation(string $location = null){
         if($this->serverGeoLocation === null){
             $this->serverGeoLocation = $location;
         }
