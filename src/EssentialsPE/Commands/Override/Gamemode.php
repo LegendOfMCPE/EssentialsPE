@@ -3,6 +3,7 @@ namespace EssentialsPE\Commands\Override;
 
 use EssentialsPE\BaseFiles\BaseAPI;
 use pocketmine\command\CommandSender;
+use pocketmine\command\Command;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
@@ -108,13 +109,14 @@ class Gamemode extends BaseOverrideCommand{
         }
         $gmstring = $this->getAPI()->getServer()->getGamemodeString($gm);
         if($player->getGamemode() === $gm){
-            $player->sendMessage(TextFormat::RED . "[Error] " . ($player === $sender ? "You're" : $args[1] . " is") . " already in " . $gmstring . " mode");
+            $sender->sendMessage(TextFormat::RED . "[Error] " . ($player === $sender ? "You're" : $player->getName() . " is") . " already in " . $gmstring);
             return false;
         }
         if($player !== $sender){
-            $sender->sendMessage(TextFormat::GREEN . $args[1] . " is now in " . $gmstring . " mode");
+            $player->sendMessage("Your game mode has been updated");
         }
         $player->setGamemode($gm);
+		Command::broadcastCommandMessage($sender, "Set ".($player === $sender? "own": $player->getName()."'s")." game mode to ".$gmstring);
         return true;
     }
 
