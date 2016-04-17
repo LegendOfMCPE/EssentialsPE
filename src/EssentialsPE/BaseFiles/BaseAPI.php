@@ -1237,9 +1237,11 @@ class BaseAPI{
         if($ev->isCancelled()){
             return false;
         }
-        $this->getSession($player)->setMuted($ev->willMute(), $ev->getMutedUntil());
-        if($notify && $player->hasPermission("essentials.mute.notify")){
-            $player->sendMessage(TextFormat::YELLOW . "You where " . ($this->isMuted($player) ? "muted " . ($ev->getMutedUntil() !== null ? "until: " . TextFormat::AQUA . $ev->getMutedUntil()->format("l, F j, Y") . TextFormat::RED . " at " . TextFormat::AQUA . $ev->getMutedUntil()->format("h:ia") : TextFormat::AQUA . "Forever" . TextFormat::YELLOW . "!") : "unmuted!"));
+        if($this->isMuted($player) != $state){ //Only do this if the mute state is changing. This fixes the message on server reload.
+            $this->getSession($player)->setMuted($ev->willMute(), $ev->getMutedUntil());
+            if($notify && $player->hasPermission("essentials.mute.notify")){
+                $player->sendMessage(TextFormat::YELLOW . "You have been " . ($this->isMuted($player) ? "muted " . ($ev->getMutedUntil() !== null ? "until: " . TextFormat::AQUA . $ev->getMutedUntil()->format("l, F j, Y") . TextFormat::RED . " at " . TextFormat::AQUA . $ev->getMutedUntil()->format("h:ia") : TextFormat::AQUA . "Forever" . TextFormat::YELLOW . "!") : "unmuted!"));
+            }
         }
         return true;
     }
