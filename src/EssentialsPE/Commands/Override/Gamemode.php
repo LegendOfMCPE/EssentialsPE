@@ -116,7 +116,7 @@ class Gamemode extends BaseOverrideCommand{
             $player->sendMessage("Your game mode has been updated");
         }
         $player->setGamemode($gm);
-		Command::broadcastCommandMessage($sender, "Set ".($player === $sender? "own": $player->getName()."'s")." game mode to ".$gmstring);
+	Command::broadcastCommandMessage($sender, "Set ".($player === $sender? "own": $player->getName()."'s")." game mode to ".$gmstring);
         return true;
     }
 
