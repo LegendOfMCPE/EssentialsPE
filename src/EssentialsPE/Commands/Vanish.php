@@ -53,25 +53,6 @@ class Vanish extends BaseCommand{
                 return false;
                 break;
         }
-        if((!isset($args[0]) && !$sender instanceof Player) || count($args) > 1){
-            $this->sendUsage($sender, $alias);
-            return false;
-        }
-        $player = $sender;
-        if(isset($args[0])){
-            if(!$sender->hasPermission("essentials.vanish.other")){
-                $sender->sendMessage($this->getPermissionMessage());
-                return false;
-            }elseif(!($player = $this->getAPI()->getPlayer($args[0]))){
-                $sender->sendMessage(TextFormat::RED . "[Error] Player not found");
-                return false;
-            }
-        }
-        $this->getAPI()->switchVanish($player);
-        $player->sendMessage(TextFormat::GRAY . "You're now " . ($s = $this->getAPI()->isVanished($player) ? "vanished" : "visible"));
-        if($player !== $sender){
-            $sender->sendMessage(TextFormat::GRAY .  $player->getDisplayName() . " is now $s");
-        }
         return true;
     }
 }
