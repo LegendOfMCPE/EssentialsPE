@@ -1291,7 +1291,7 @@ class BaseAPI{
             return false;
         }
         if(strtolower($ev->getNewNick()) === strtolower($player->getName()) || $ev->getNewNick() === "off" || trim($ev->getNewNick()) === "" || $ev->getNewNick() === null){
-            $ev->setNick(null);
+            $ev->setNick(string);
         }
         $this->getSession($player)->setNick($ev->getNewNick());
         return true;
