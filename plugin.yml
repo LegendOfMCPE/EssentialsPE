@@ -1,67 +1,67 @@
-name: EssentialsPE
+name: EssentialsPE РУсский
 main: EssentialsPE\Loader
 version: 2.0.0
 api: 2.0.0
-author: LegendsOfMCPE Team
+author: Language by WeekThor
 website: https://github.com/LegendOfMCPE/EssentialsPE
 
 permissions:
     essentials:
         default: false
-        description: "Allow to access to every EssentialsPE feature"
+        description: "Разрешение принимать Обновления"
         children:
             essentials.ban:
                 default: false
-                description: "Ban utilities nodes"
+                description: "Забанить игрока"
                 children:
                     essentials.ban.exempt:
                         default: op
-                        description: "Prevent the player from being banned"
+                        description: "Защита от бана"
             essentials.colorchat:
                 default: op
-                description: "Allow to chat using colors!"
+                description: "Разрешение использавать цвета в чате!"
             essentials.afk:
                 default: false
-                description: "Toggle the AFK status"
+                description: "Смена режима AFK"
                 children:
                     essentials.afk.use:
                         default: true
-                        description: "Change self AFK status"
+                        description: "Разрешить менять статус"
                     essentials.afk.other:
                         default: op
-                        description: "Change other's AFK status"
+                        description: "Разрешить меня статус у других"
                     essentials.afk.preventauto:
                         default: op
-                        description: "Players with this permission will NOT be put into AFK after a period of inaction"
+                        description: "Разрешение не получать AFK при долгом отсутсвии каких-либо действий"
                     essentials.afk.kickexempt:
                         default: op
-                        description: "Exempt the user from being auto kicked for AFK"
+                        description: "Защита от кика из-за долгого пробывание в AFK"
             essentials.antioch:
                 default: op
-                description: "Place live TNT at the spot you're looking at"
+                description: "Установить TNT"
             essentials.back:
                 default: false
-                description: "Return to your previous spot before teleporting"
+                description: "Вернуться на предыдущюю локацию"
                 children:
                     essentials.back.use:
                         default: op
-                        description: "Return to your previous spot before teleporting"
+                        description: "Использавание комманды"
                     essentials.back.ondeath:
                         default: op
-                        description: "Return to the place where you die"
+                        description: "Вернуться на место смерти"
             essentials.balance:
                 default: false
-                description: "Allow players to see their balance"
+                description: "Просмотр баланса"
                 children:
                     essentials.balance.use:
                         default: true
-                        description: "See your current balance"
+                        description: "Разрешение на использование"
                     essentials.balance.other:
                         default: op
-                        description: "Let players to see other's balance"
+                        description: "Просмотреть баланс другого игрока"
             essentials.bigtree:
                 default: op
-                description: "Spawns a big tree"
+                description: "Заспавнить большое дерево"
             essentials.break:
                 default: false
                 description: "Breaks the block you're looking at"

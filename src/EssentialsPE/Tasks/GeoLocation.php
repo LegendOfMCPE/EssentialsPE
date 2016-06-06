@@ -32,17 +32,17 @@ class GeoLocation extends AsyncTask{
     public function onRun(){
         if($this->player === null){
             $data = Utils::getURL("http://ip-api.com/json/");
-            $this->setResult(json_decode($data, true)["country"] ?? "Unknown");
+            $this->setResult(json_decode($data, true)["country"] ?? "Нет Данных");
         }else{
             $list = [];
             foreach($this->ip as $spl => $ip){
                 $data = Utils::getURL("http://ip-api.com/json/" . $ip);
                 $data = json_decode($data, true);
-                if(isset($data["message"]) && $data["message"] === "private range"){
+                if(isset($data["message"]) && $data["message"] === "Частный диапозон"){
                     $data["country"] = "server";
                 }
                 if(isset($data["country"])){
-                    $list[$spl] = $data["country"] ?? "Unknown";
+                    $list[$spl] = $data["country"] ?? "Н/Д";
                 }
             }
             $this->setResult($list);
