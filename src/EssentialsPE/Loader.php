@@ -93,7 +93,7 @@ class Loader extends PluginBase{
         if(!is_dir($this->getDataFolder())){
             mkdir($this->getDataFolder());
         }
-	    $this->getLogger()->info(TextFormat::YELLOW . "Loading...");
+	    $this->getLogger()->info(TextFormat::YELLOW . "Загрузка...");
         $this->registerEvents();
         $this->registerCommands();
         if(count($p = $this->getServer()->getOnlinePlayers()) > 0){
@@ -227,7 +227,7 @@ class Loader extends PluginBase{
             if(isset($alias[$del])){
                 unset($commands[$alias[$del]]);
             }else{
-                $this->getLogger()->debug("\"$del\" command not found inside EssentialsPE, skipping...");
+                $this->getLogger()->debug("\"$del\" Команда не найдена в плагине, Пропускаем её...");
             }
         }
         $this->getServer()->getCommandMap()->registerAll("EssentialsPE", $commands);
@@ -246,7 +246,7 @@ class Loader extends PluginBase{
         $cfg = $this->getConfig();
 
         if(!$cfg->exists("version") || $cfg->get("version") !== "0.0.2"){
-            $this->getLogger()->debug(TextFormat::RED . "An invalid config file was found, generating a new one...");
+            $this->getLogger()->debug(TextFormat::RED . "Найден не корректный файл конфигурации, создание...");
             rename($this->getDataFolder() . "config.yml", $this->getDataFolder() . "config.yml.old");
             $this->saveDefaultConfig();
             $cfg = $this->getConfig();
