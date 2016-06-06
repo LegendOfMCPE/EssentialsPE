@@ -24,7 +24,7 @@ class TPRequestTask extends BaseTask{
      */
     public function onRun($currentTick){
         if($this->requester instanceof Player && $this->requester->isOnline()) {
-            $this->getAPI()->getServer()->getLogger()->debug(TextFormat::YELLOW . "Запуск EssentialsPE's TPRequestTask");
+            $this->getAPI()->getServer()->getLogger()->debug(TextFormat::YELLOW . "Запуск EssentialsPE's TPRequestTask!");
             $this->getAPI()->removeTPRequest($this->requester);
         }
     }
