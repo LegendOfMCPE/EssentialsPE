@@ -407,6 +407,15 @@ permissions:
                             essentials.sign.break.warp:
                                 default: op
                                 description: "Allow to remove Warp signs"
+                            essentials.sign.break.balance:
+                                default: op
+                                description: "Allow to remove Balance signs"
+                            essentials.sign.break.buy:
+                                default: op
+                                description: "Allow to remove Buy signs"
+                            essentials.sign.break.sell:
+                                default: op
+                                description: "Allow to remove Sell signs"
                     essentials.sign.color:
                         default: op
                         description: "Allow to create colored signs"
@@ -438,6 +447,15 @@ permissions:
                             essentials.sign.create.warp:
                                 default: op
                                 description: "Allow to create Warp signs"
+                            essentials.sign.create.balance:
+                                default: op
+                                description: "Allow to create Balance signs"
+                            essentials.sign.create.sell:
+                                default: op
+                                description: "Allow to create Sell signs"
+                            essentials.sign.create.warp:
+                                default: op
+                                description: "Allow to create Buy signs"
                     essentials.sign.use:
                         default: false
                         description: "Allow to use special signs"
@@ -466,6 +484,15 @@ permissions:
                             essentials.sign.use.warp:
                                 default: op
                                 description: "Allow to use Warp signs"
+                            essentials.sign.use.balance:
+                                default: true
+                                description: "Allow to use Balance signs"
+                            essentials.sign.use.buy:
+                                default: true
+                                description: "Allow to use Buy signs"
+                            essentials.sign.use.sell:
+                                default: op
+                                description: "Allow to use Sell signs"
             essentials.spawn:
                 default: false
                 description: "Teleport to server's main spawn"
