@@ -417,9 +417,7 @@ class SignEvents extends BaseEventHandler{
             }
         }
         
-        /**
-         * Economy signs
-         */
+        // Economy signs
         
         // Balance sign
         elseif(strtolower(TextFormat::clean($event->getLine(0), true)) === "[balance]" && $event->getPlayer()->hasPermission("essentials.sign.create.balance")) {
