@@ -179,10 +179,6 @@ class SignEvents extends BaseEventHandler{
                 }
             }
 
-            /**
-             * Economy signs
-             */
-
             // Balance sign
             elseif(TextFormat::clean($tile->getText()[0], true) === "[Balance]"){
                 $event->setCancelled(true);
