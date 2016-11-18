@@ -195,6 +195,7 @@ class SignEvents extends BaseEventHandler{
                 if(!$event->getPlayer()->hasPermission("essentials.sign.use.balancetop")){
                     $event->getPlayer()->sendMessage(TextFormat::RED . "You don't have permissions to use this sign");
                 }else{
+                    $event->getPlayer()->sendMessage(TextFormat::GREEN . " --- Balance Top --- ");
                     $this->getAPI()->sendBalanceTop($event->getPlayer());
                 }
             }
@@ -418,13 +419,6 @@ class SignEvents extends BaseEventHandler{
             }
         }
 
-        // Colored Sign
-        elseif($event->getPlayer()->hasPermission("essentials.sign.color")){
-            for($i = 0 ; $i < 4 ; $i++){
-                $event->setLine($i, $this->getAPI()->colorMessage($event->getLine($i)));
-            }
-        }
-        
         // Economy signs
 
         // BalanceTop sign
@@ -523,6 +517,12 @@ class SignEvents extends BaseEventHandler{
             } else {
                 $event->setCancelled(true);
                 $event->getPlayer()->sendMessage(TextFormat::RED . "You don't have permission to create this sign!");
+            }
+        }
+        // Colored Sign
+        elseif($event->getPlayer()->hasPermission("essentials.sign.color")){
+            for($i = 0 ; $i < 4 ; $i++){
+                $event->setLine($i, $this->getAPI()->colorMessage($event->getLine($i)));
             }
         }
     }
