@@ -420,6 +420,16 @@ class SignEvents extends BaseEventHandler{
         // Economy signs
         
         // Balance sign
+        
+        // Tests > Remove after
+        if($event->getPlayer()->hasPermission("essentials.sign.create.balance")) {
+            $event->getPlayer()->sendMessage("Permission correct.");
+        }
+        if(strtolower(TextFormat::clean($event->getLine(0), true)) === "[balance]") {
+            $event->getPlayer()->sendMessage("Sign text correct.");
+        }
+        // Tests > End of tests
+        
         elseif(strtolower(TextFormat::clean($event->getLine(0), true)) === "[balance]" && $event->getPlayer()->hasPermission("essentials.sign.create.balance")) {
             $event->setLine(0, TextFormat::AQUA . "[Balance]");
             $event->getPlayer()->sendMessage(TextFormat::GREEN . "Balance sign successfully created!");
