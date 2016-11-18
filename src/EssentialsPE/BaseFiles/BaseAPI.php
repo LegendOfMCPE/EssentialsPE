@@ -380,6 +380,14 @@ class BaseAPI{
      */
 
     /**
+     * Check if economy is enabled or not
+     * 
+     * @return bool
+     */
+    public function isEconomyEnabled(): bool {
+        return $this->getEssentialsPEPlugin->getConfig()->get("economy");
+    }
+    /**
      * Get the default balance for new players
      *
      * @return int

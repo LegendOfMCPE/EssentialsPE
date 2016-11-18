@@ -416,6 +416,9 @@ permissions:
                             essentials.sign.break.sell:
                                 default: op
                                 description: "Allow to remove Sell signs"
+                            essentials.sign.break.balancetop:
+                                default: op
+                                description: "Allow to remove BalanceTop signs"
                     essentials.sign.color:
                         default: op
                         description: "Allow to create colored signs"

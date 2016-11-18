@@ -180,7 +180,7 @@ class SignEvents extends BaseEventHandler{
             }
 
             // Balance sign
-            elseif(TextFormat::clean($tile->getText()[0], true) === "[Balance]"){
+            elseif(TextFormat::clean($tile->getText()[0], true) === "[Balance]" && $this->getAPI()->isEconomyEnabled()){
                 $event->setCancelled(true);
                 if(!$event->getPlayer()->hasPermission("essentials.sign.use.balance")){
                     $event->getPlayer()->sendMessage(TextFormat::RED . "You don't have permissions to use this sign");
@@ -190,7 +190,7 @@ class SignEvents extends BaseEventHandler{
             }
 
             // BalanceTop sign
-            elseif(TextFormat::clean($tile->getText()[0], true) === "[BalanceTop]"){
+            elseif(TextFormat::clean($tile->getText()[0], true) === "[BalanceTop]" && $this->getAPI()->isEconomyEnabled()){
                 $event->setCancelled(true);
                 if(!$event->getPlayer()->hasPermission("essentials.sign.use.balancetop")){
                     $event->getPlayer()->sendMessage(TextFormat::RED . "You don't have permissions to use this sign");
@@ -201,7 +201,7 @@ class SignEvents extends BaseEventHandler{
             }
             
             // Buy sign
-            elseif(TextFormat::clean($tile->getText()[0], true) === "[Buy]"){
+            elseif(TextFormat::clean($tile->getText()[0], true) === "[Buy]" && $this->getAPI()->isEconomyEnabled()){
                 $event->setCancelled(true);
                 if(!$event->getPlayer()->hasPermission("essentials.sign.use.buy")){
                     $event->getPlayer()->sendMessage(TextFormat::RED . "You don't have permissions to use this sign");
@@ -227,7 +227,7 @@ class SignEvents extends BaseEventHandler{
             }
             
             // Sell sign
-            elseif(TextFormat::clean($tile->getText()[0], true) === "[Sell]"){
+            elseif(TextFormat::clean($tile->getText()[0], true) === "[Sell]" && $this->getAPI()->isEconomyEnabled()){
                 $event->setCancelled(true);
                 if(!$event->getPlayer()->hasPermission("essentials.sign.use.sell")){
                     $event->getPlayer()->sendMessage(TextFormat::RED . "You don't have permissions to use this sign");
@@ -262,7 +262,7 @@ class SignEvents extends BaseEventHandler{
     public function onBlockBreak(BlockBreakEvent $event){
         $tile = $event->getBlock()->getLevel()->getTile(new Vector3($event->getBlock()->getFloorX(), $event->getBlock()->getFloorY(), $event->getBlock()->getFloorZ()));
         if($tile instanceof Sign){
-            $key = ["Free", "Gamemode", "Heal", "Kit", "Repair", "Time", "Teleport", "Warp", "Balance", "Buy", "Sell"];
+            $key = ["Free", "Gamemode", "Heal", "Kit", "Repair", "Time", "Teleport", "Warp", "Balance", "Buy", "Sell", "BalanceTop"];
             foreach($key as $k){
                 if(TextFormat::clean($tile->getText()[0], true) === "[" . $k . "]" && !$event->getPlayer()->hasPermission("essentials.sign.break." . strtolower($k))){
                     $event->setCancelled(true);
@@ -422,7 +422,7 @@ class SignEvents extends BaseEventHandler{
         // Economy signs
 
         // BalanceTop sign
-        elseif(strtolower(TextFormat::clean($event->getLine(0), true)) === "[balancetop]") {
+        elseif(strtolower(TextFormat::clean($event->getLine(0), true)) === "[balancetop]" && $this->getAPI()->isEconomyEnabled()) {
             if($event->getPlayer()->hasPermission("essentials.sign.create.balancetop")) {
                 $event->setLine(0, TextFormat::AQUA . "[BalanceTop]");
                 $event->getPlayer()->sendMessage(TextFormat::GREEN . "BalanceTop sign succesfully created!");
@@ -433,7 +433,7 @@ class SignEvents extends BaseEventHandler{
         }
         
         // Balance sign
-        elseif(strtolower(TextFormat::clean($event->getLine(0), true)) === "[balance]") {
+        elseif(strtolower(TextFormat::clean($event->getLine(0), true)) === "[balance]" && $this->getAPI()->isEconomyEnabled()) {
             if($event->getPlayer()->hasPermission("essentials.sign.create.balance")) {
                 $event->setLine(0, TextFormat::AQUA . "[Balance]");
                 $event->getPlayer()->sendMessage(TextFormat::GREEN . "Balance sign successfully created!");
@@ -444,7 +444,7 @@ class SignEvents extends BaseEventHandler{
         }
         
         // Buy sign
-        elseif(strtolower(TextFormat::clean($event->getLine(0), true)) === "[buy]"){
+        elseif(strtolower(TextFormat::clean($event->getLine(0), true)) === "[buy]" && $this->getAPI()->isEconomyEnabled()){
             if($event->getPlayer()->hasPermission("essentials.sign.create.buy")) {
                 if(trim($event->getLine(1)) !== "" || $event->getLine(1) !== null){
                     $item_name = $event->getLine(1);
@@ -482,7 +482,7 @@ class SignEvents extends BaseEventHandler{
             }
         }
         
-        elseif(strtolower(TextFormat::clean($event->getLine(0), true)) === "[sell]"){
+        elseif(strtolower(TextFormat::clean($event->getLine(0), true)) === "[sell]" && $this->getAPI()->isEconomyEnabled()){
             if($event->getPlayer()->hasPermission("essentials.sign.create.sell")) {
                 if(trim($event->getLine(1)) !== "" || $event->getLine(1) !== null){
                     $item_name = $event->getLine(1);
