@@ -453,9 +453,12 @@ permissions:
                             essentials.sign.create.sell:
                                 default: op
                                 description: "Allow to create Sell signs"
-                            essentials.sign.create.warp:
+                            essentials.sign.create.buy:
                                 default: op
                                 description: "Allow to create Buy signs"
+                            essentials.sign.create.balancetop:
+                                default: op
+                                description: "Allow to create BalanceTop signs"
                     essentials.sign.use:
                         default: false
                         description: "Allow to use special signs"
@@ -491,8 +494,11 @@ permissions:
                                 default: true
                                 description: "Allow to use Buy signs"
                             essentials.sign.use.sell:
-                                default: op
+                                default: true
                                 description: "Allow to use Sell signs"
+                            essentials.sign.use.balancetop:
+                                default: true
+                                description: "Allow to use BalanceTop signs"
             essentials.spawn:
                 default: false
                 description: "Teleport to server's main spawn"
