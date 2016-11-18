@@ -5,7 +5,7 @@
 version: 0.0.3
 
 # Set this to false to disable EssentialsPE, or true to enable it
-enable: "true"
+enable: true
 
 # Disable various features of EssentialsPE, set to false to disable
 homes: true
