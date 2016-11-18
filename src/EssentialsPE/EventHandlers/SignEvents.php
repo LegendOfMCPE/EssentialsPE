@@ -212,10 +212,10 @@ class SignEvents extends BaseEventHandler{
                     }
 
                     $item_name = $tile->getText()[1];
-                    $amount = str_replace("Amount: ", "", $tile->getText()[2]);
+                    $amount = substr($tile->getText()[2], 8);
                     $item = $this->getAPI()->getItem($item_name);
                     $item->setCount($amount);
-                    $price = str_replace("Price: ", "", $tile->getText()[3]);
+                    $price = substr($tile->getText()[3], 7);
                     if(!$this->getAPI()->getPlayerBalance($event->getPlayer()) >= $price) {
                         $event->getPlayer()->sendMessage(TextFormat::RED . "[Error] You don't have enough money to buy this item!");
                         return;
@@ -238,10 +238,10 @@ class SignEvents extends BaseEventHandler{
                     }
 
                     $item_name = $tile->getText()[1];
-                    $amount = str_replace("Amount: ", "", $tile->getText()[2]);
+                    $amount = substr($tile->getText()[2], 8);
                     $item = $this->getAPI()->getItem($item_name);
                     $item->setCount($amount);
-                    $price = str_replace("Price: ", "", $tile->getText()[3]);
+                    $price = substr($tile->getText()[3], 7);
                     if(!$event->getPlayer()->getInventory()->contains($item)) {
                         $event->getPlayer()->sendMessage(TextFormat::RED . "[Error] You don't have this item in your inventory!");
                         return;
@@ -469,8 +469,8 @@ class SignEvents extends BaseEventHandler{
                         $event->getPlayer()->sendMessage(TextFormat::GREEN . "Buy sign successfully created!");
                         $event->setLine(0, TextFormat::AQUA . "[Buy]");
                         $event->setLine(1, ($item->getName() === "Unknown" ? $item->getId() : $item->getName()));
-                        $event->setLine(2, TextFormat::BOLD . "Amount: " . $amount);
-                        $event->setLine(3, TextFormat::BOLD . "Price: " . $price);
+                        $event->setLine(2, "Amount: " . $amount);
+                        $event->setLine(3, "Price: " . $price);
                     }
                 }else{
                     $event->getPlayer()->sendMessage(TextFormat::RED . "[Error] You should provide an item name/ID");
@@ -507,8 +507,8 @@ class SignEvents extends BaseEventHandler{
                         $event->getPlayer()->sendMessage(TextFormat::GREEN . "Buy sign successfully created!");
                         $event->setLine(0, TextFormat::AQUA . "[Buy]");
                         $event->setLine(1, ($item->getName() === "Unknown" ? $item->getId() : $item->getName()));
-                        $event->setLine(2, TextFormat::BOLD . "Amount: " . $amount);
-                        $event->setLine(3, TextFormat::BOLD . "Price: " . $price);
+                        $event->setLine(2, "Amount: " . $amount);
+                        $event->setLine(3, "Price: " . $price);
                     }
                 }else{
                     $event->getPlayer()->sendMessage(TextFormat::RED . "[Error] You should provide an item name/ID");
