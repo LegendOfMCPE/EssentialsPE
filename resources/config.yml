@@ -4,10 +4,10 @@
 # DO NOT EDIT THIS PROPERTY! For internal use ONLY
 version: 0.0.3
 
-# SET THIS TO "TRUE" TO ENABLE THIS PLUGIN
-enable: "true"
+# Set this to false to disable EssentialsPE, or true to enable it
+enable: true
 
-# Disable various command features of EssentialsPE, set to false to disable
+# Disable various features of EssentialsPE, set to false to disable
 homes: true
 warps: true
 powertool: true

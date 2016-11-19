@@ -40,7 +40,8 @@ We try to keep the master branch stable, but do not complain if it happens to no
   - [x] Test the commands.
   - [ ] Implement Economy Signs:
      - [ ] Trade.
-     - [ ] Buy.
-     - [ ] Sell.
-     - [ ] Balance.
+     - [x] Buy.
+     - [x] Sell.
+     - [x] Balance.
+     - [x] BalanceTop.
   - [ ] Test Economy Signs.
