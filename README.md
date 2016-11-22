@@ -1,4 +1,4 @@
-EssentialsPE [![Build Status](https://travis-ci.org/LegendOfMCPE/EssentialsPE.svg?branch=master)](https://travis-ci.org/LegendOfMCPE/EssentialsPE) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/LegendOfMCPE/EssentialsPE?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+EssentialsPE [![Build Status](https://travis-ci.org/LegendOfMCPE/EssentialsPE.svg?branch=master)](https://travis-ci.org/LegendOfMCPE/EssentialsPE) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/LegendOfMCPE/EssentialsPE?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Poggit](http://poggit.mcpe.me/poggit/ci.badge/LegendOfMCPE/EssentialsPE/EssentialsPE)](http://poggit.mcpe.me/poggit/ci/LegendOfMCPE/EssentialsPE/EssentialsPE)
 =========
 
 The port version of [Bukkit Essentials](http://dev.bukkit.org/bukkit-plugins/essentials/) for [PocketMine-MP Software](http://www.pmmp.gq/).
