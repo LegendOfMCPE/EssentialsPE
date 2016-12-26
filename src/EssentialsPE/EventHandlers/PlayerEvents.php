@@ -33,7 +33,6 @@ class PlayerEvents extends BaseEventHandler{
             $event->getPlayer()->setBanned(false);
         }
         // Session configure:
-        $this->getAPI()->createSession($event->getPlayer());
     }
 
     /**
@@ -41,6 +40,7 @@ class PlayerEvents extends BaseEventHandler{
      */
     public function onPlayerJoin(PlayerJoinEvent $event){
         // Nick and NameTag set:
+        $this->getAPI()->createSession($event->getPlayer());
         $message = $event->getJoinMessage();
         if($message instanceof TranslationContainer){
             foreach($message->getParameters() as $i => $m){
