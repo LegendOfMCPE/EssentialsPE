@@ -32,14 +32,13 @@ class PlayerEvents extends BaseEventHandler{
         if($event->getPlayer()->isBanned() && $event->getPlayer()->hasPermission("essentials.ban.exempt")){
             $event->getPlayer()->setBanned(false);
         }
-        // Session configure:
     }
 
     /**
      * @param PlayerJoinEvent $event
      */
     public function onPlayerJoin(PlayerJoinEvent $event){
-        // Nick and NameTag set:
+        // Player session creation:
         $this->getAPI()->createSession($event->getPlayer());
         $message = $event->getJoinMessage();
         if($message instanceof TranslationContainer){
