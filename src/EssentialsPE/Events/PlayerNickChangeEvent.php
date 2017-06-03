@@ -1,5 +1,5 @@
 <?php
-namespace EssentialsPE\Events;
+namespace Events;
 
 
 use EssentialsPE\BaseFiles\BaseAPI;
