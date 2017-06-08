@@ -38,9 +38,9 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\ListTag;
-use pocketmine\network\protocol\AddEntityPacket;
-use pocketmine\network\protocol\MobEffectPacket;
-use pocketmine\network\protocol\SetTimePacket;
+use pocketmine\network\mcpe\protocol\AddEntityPacket;
+use pocketmine\network\mcpe\protocol\MobEffectPacket;
+use pocketmine\network\mcpe\protocol\SetTimePacket;
 use pocketmine\OfflinePlayer;
 use pocketmine\permission\Permission;
 use pocketmine\Player;
@@ -107,11 +107,11 @@ class BaseAPI{
                     case "default-balance":
                         $value = 0;
                     break;
-                
+
                     case "max-money":
                         $value = 10000000000000;
                     break;
-                
+
                     case "min-money":
                         $value = 0;
                     break;
@@ -414,10 +414,10 @@ class BaseAPI{
     public function getCurrencySymbol(): string{
         return $this->economy->get("currency-symbol");
     }
-    
+
     /**
      * Return the top 5 players with most money
-     * 
+     *
      * @return array
      */
     public function sendBalanceTop($sender) {
@@ -432,7 +432,7 @@ class BaseAPI{
         }
         return true;
     }
-    
+
     /**
      * Return the current balance of a player.
      *
@@ -555,7 +555,7 @@ class BaseAPI{
         }
         return [$amount, $worth];
     }
-    
+
     /**
      * @param Player $player
      * @param int $amount
