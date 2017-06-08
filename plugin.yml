@@ -268,7 +268,7 @@ permissions:
                 default: true
                 description: "Send private messages to other players"
             essentials.mute:
-                default: false
+                default: op
                 description: "Mute a player from the chat"
                 children:
                     essentials.mute.use:
