@@ -51,6 +51,7 @@ class Condense extends BaseCommand{
         }
         if(!$this->getAPI()->condenseItems($sender->getInventory(), $target)){
             $sender->sendMessage(TextFormat::RED . "[Error] This item can't be condensed");
+            return false;
         }
         $sender->sendMessage(TextFormat::YELLOW . "Condensing items...");
         return true;
