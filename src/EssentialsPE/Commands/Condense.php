@@ -45,7 +45,7 @@ class Condense extends BaseCommand{
                 $target = $this->getAPI()->getItem($args[0]);
                 if($target->getId() === 0){
                     $sender->sendMessage(TextFormat::RED . "Unknown item \"" . $args[0] . "\"");
-                    return false;
+                    return true;
                 }
                 break;
         }
