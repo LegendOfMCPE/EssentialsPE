@@ -41,6 +41,7 @@ class More extends BaseCommand{
             return false;
         }
         $item->setCount($sender->hasPermission("essentials.oversizedstacks") ? $this->getPlugin()->getConfig()->get("oversized-stacks") : $item->getMaxStackSize());
+        $sender->getInventory()->setItemInHand($item);
         $sender->sendMessage(TextFormat::AQUA . "Filled up the item stack to " . $item->getCount());
         return true;
     }
