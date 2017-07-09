@@ -43,7 +43,7 @@ class Sudo extends BaseCommand{
             $sender->sendMessage(TextFormat::GREEN . "Sending message as " .  $player->getDisplayName());
             $this->getAPI()->getServer()->getPluginManager()->callEvent($ev = new PlayerChatEvent($player, substr($v, 2)));
             if(!$ev->isCancelled()){
-                $this->getAPI()->getServer()->broadcastMessage(\sprintf($ev->getFormat(), $ev->getPlayer()->getDisplayName(), $ev->getMessage()), $ev->getRecipients());
+                $this->getAPI()->getServer()->broadcastMessage($this->getAPI()->getServer()->getLanguage()->translateString($ev->getFormat(), [$ev->getPlayer()->getDisplayName(), $ev->getMessage()]), $ev->getRecipients());
             }
         }else{
             $sender->sendMessage(TextFormat::AQUA . "Command ran as " .  $player->getDisplayName());
