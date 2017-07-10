@@ -1784,7 +1784,7 @@ class BaseAPI{
      * @return bool|Config
      */
     private function getSessionFile(string $player){
-        $this->getEssentialsPEPlugin()->getLogger()->info("Running");
+        $this->getEssentialsPEPlugin()->getLogger()->debug("Running");
         if(!is_dir($dir = $this->getEssentialsPEPlugin()->getDataFolder() . "Sessions" . DIRECTORY_SEPARATOR)){
             mkdir($dir);
         }
