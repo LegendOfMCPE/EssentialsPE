@@ -2400,6 +2400,8 @@ class BaseAPI{
             return false;
         }
         $this->warps[$warp] = $pos instanceof BaseLocation ? $pos : BaseLocation::fromPosition($warp, ($pos instanceof Location ? $pos : Location::fromObject($pos, $pos->getLevel(), $yaw, $pitch)));
+        $permission = $this->getServer()->getPluginManager()->getPermission("essentialspe.warps");
+        $permission->addParent(new Permission("essentialspe.warps." . $warp), null);
         return true;
     }
 
