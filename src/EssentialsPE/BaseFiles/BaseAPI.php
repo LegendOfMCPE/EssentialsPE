@@ -156,27 +156,21 @@ class BaseAPI{
 
     private final function loadKits(){
         $cfg = new Config($this->getEssentialsPEPlugin()->getDataFolder() . "Kits.yml", Config::YAML);
-        $children = [];
         foreach($cfg->getAll() as $n => $i){
             $this->kits[$n] = new BaseKit($n, $i);
-            $children[] = new Permission("essentials.kits." . $n);
         }
-        $this->getServer()->getPluginManager()->addPermission(new Permission("essentials.kits", null, null, $children));
     }
 
     private final function loadWarps(){
         $cfg = new Config($this->getEssentialsPEPlugin()->getDataFolder() . "Warps.yml", Config::YAML);
-        $children = [];
         foreach($cfg->getAll() as $n => $v){
             if($this->getServer()->isLevelGenerated($v[3])){
                 if(!$this->getServer()->isLevelLoaded($v[3])){
                     $this->getServer()->loadLevel($v[3]);
                 }
                 $this->warps[$n] = new BaseLocation($n, $v[0], $v[1], $v[2], $this->getServer()->getLevelByName($v[3]), $v[4], $v[5]);
-                $children[] = new Permission("essentials.warps." . $n);
             }
         }
-        $this->getServer()->getPluginManager()->addPermission(new Permission("essentials.warps", null, null, $children));
     }
 
     /**
