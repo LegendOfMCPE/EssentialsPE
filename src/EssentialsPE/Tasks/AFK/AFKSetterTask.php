@@ -27,7 +27,7 @@ class AFKSetterTask extends BaseTask{
     /**
      * @param int $currentTick
      */
-    public function onRun($currentTick){
+    public function onRun(int $currentTick){
         $this->getAPI()->getServer()->getLogger()->debug(TextFormat::YELLOW . "Running EssentialsPE's AFKSetterTask");
         foreach($this->getAPI()->getServer()->getOnlinePlayers() as $p){
             if(!$this->getAPI()->isAFK($p) && ($last = $this->getAPI()->getLastPlayerMovement($p)) !== null && !$p->hasPermission("essentials.afk.preventauto")){
