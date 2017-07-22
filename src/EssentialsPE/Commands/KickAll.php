@@ -36,7 +36,7 @@ class KickAll extends BaseCommand{
             $reason = implode(" ", $args);
         }
         foreach($this->getAPI()->getServer()->getOnlinePlayers() as $p){
-            if($p != $sender){
+            if($p !== $sender){
                 $p->kick($reason, false);
             }
         }
