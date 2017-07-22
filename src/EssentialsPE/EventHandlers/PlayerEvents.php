@@ -172,7 +172,7 @@ class PlayerEvents extends BaseEventHandler{
     public function onEntityDamageByEntity(EntityDamageEvent $event){
         $victim = $event->getEntity();
         if($victim instanceof Player){
-            if($this->getAPI()->isGod($victim) || ($this->getAPI()->isAFK($victim)) && $this->getPlugin()->getConfig()->getNested("afk.safe")){
+            if($this->getAPI()->isGod($victim) || ($this->getAPI()->isAFK($victim) && $this->getPlugin()->getConfig()->getNested("afk.safe"))){
                 $event->setCancelled(true);
             }
 

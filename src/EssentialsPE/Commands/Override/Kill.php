@@ -45,7 +45,7 @@ class Kill extends BaseOverrideCommand{
             $sender->sendMessage(TextFormat::RED . $args[0] . " can't be killed!");
             return false;
         }
-        $sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($player, EntityDamageEvent::CAUSE_SUICIDE, ($player->getHealth())));
+        $sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($player, EntityDamageEvent::CAUSE_SUICIDE, $player->getHealth()));
         if($ev->isCancelled()){
             return true;
         }

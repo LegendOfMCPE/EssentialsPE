@@ -275,8 +275,8 @@ class Loader extends PluginBase{
         }
         $cfg = $this->getConfig()->get("commands", []);
         foreach($cfg as $del){
-            if(isset($alias[$del])){
-                unset($commands[$alias[$del]]);
+            if(isset($aliased[$del])){
+                unset($commands[$aliased[$del]]);
             }else{
                 $this->getLogger()->debug("\"$del\" command not found inside EssentialsPE, skipping...");
             }

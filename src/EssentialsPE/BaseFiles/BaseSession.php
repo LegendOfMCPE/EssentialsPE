@@ -678,7 +678,7 @@ class BaseSession{
      * @return bool|int
      */
     public function getRequestToTaskID(){
-        return ($this->requestToTask !== null ? $this->requestToTask : false);
+        return ($this->requestToTask ?? false);
     }
 
     /**
@@ -718,14 +718,14 @@ class BaseSession{
      * @return bool|string
      */
     public function hasARequestFrom(string $requester){
-        return (isset($this->requestsFrom[$requester]) ? $this->requestsFrom[$requester] : false);
+        return ($this->requestsFrom[$requester] ?? false);
     }
 
     /**
      * @return bool|string
      */
     public function getLatestRequestFrom(){
-        return ($this->latestRequestFrom !== null ? $this->latestRequestFrom : false);
+        return ($this->latestRequestFrom ?? false);
     }
 
     /**

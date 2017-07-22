@@ -177,7 +177,7 @@ class BaseAPI{
                 if(!$this->getServer()->isLevelLoaded($v[3])){
                     $this->getServer()->loadLevel($v[3]);
                 }
-                $this->warps[$n] = new BaseLocation($n, $v[0], $v[1], $v[2], $this->getServer()->getLevelByName($v[3]), $v[4], $v[5]);
+                $this->warps[$n] = new BaseLocation($n, $v[0], $v[1], $v[2], $this->getServer()->getLevelByName($v[3]), $v[4] ?? 0.0, $v[5] ?? 0.0);
                 $child = new Permission("essentials.warps." . $n, null, false);
                 $child->addParent($parent, false);
                 $this->getServer()->getPluginManager()->addPermission($child);
@@ -269,7 +269,7 @@ class BaseAPI{
             $this->getServer()->getScheduler()->cancelTask($id);
             $this->getSession($player)->removeAFKKickTaskID();
         }elseif($state && (is_int($time) && $time  > 0) && !$player->hasPermission("essentials.afk.kickexempt")){
-            $task = $this->getServer()->getScheduler()->scheduleDelayedTask(new AFKKickTask($this, $player), ($time * 20));
+            $task = $this->getServer()->getScheduler()->scheduleDelayedTask(new AFKKickTask($this, $player), $time * 20);
             $this->getSession($player)->setAFKKickTaskID($task->getTaskId());
         }
         $player->sendMessage(TextFormat::YELLOW . "You're " . ($this->isAFK($player) ? "now" : "no longer") . " AFK");
@@ -296,7 +296,7 @@ class BaseAPI{
      */
     public function scheduleAutoAFKSetter(){
         if(is_int($v = $this->getEssentialsPEPlugin()->getConfig()->getNested("afk.auto-set")) && $v > 0){
-            $this->getServer()->getScheduler()->scheduleDelayedTask(new AFKSetterTask($this), (600)); // Check every 30 seconds...
+            $this->getServer()->getScheduler()->scheduleDelayedTask(new AFKSetterTask($this), 600); // Check every 30 seconds...
         }
     }
 
@@ -535,7 +535,7 @@ class BaseAPI{
         }
         $worth = $this->getItemWorth($item->getId());
         if($amount === null){
-            $worth = $worth * $quantity;
+            $worth *= $quantity;
             $player->getInventory()->remove($item);
             $this->addToPlayerBalance($player, $worth);
             return $worth;
@@ -550,7 +550,7 @@ class BaseAPI{
         $count = $amount;
         foreach($contents as $s => $i){
             if(($count - $i->getCount()) >= 0){
-                $count = $count - $i->getCount();
+                $count -= $i->getCount();
                 $i->setCount(0);
             }else{
                 $c = $i->getCount() - $count;
@@ -634,8 +634,8 @@ class BaseAPI{
                 ])
             ]);
         }
-        $entity = Entity::createEntity($type, $level, $nbt) ?? false;
-        return $entity;
+
+        return (Entity::createEntity($type, $level, $nbt) ?? false);
     }
 
     /**
@@ -1209,7 +1209,7 @@ class BaseAPI{
         }
         $format[] = "/[a-zA-Z0-9_]/"; // Due to color codes can be allowed, then check for them first, so after, make a normal lookup
         $s = preg_replace($format, "", $string);
-        if(strlen($s) !== 0){
+        if($s !== ""){
             return false;
         }
         return true;
@@ -1847,13 +1847,12 @@ class BaseAPI{
      *
      * @param Player $player
      * @param int $time
-     * @param bool $static
+     * @param bool $static @deprecated
      * @return bool
      */
     public function setPlayerTime(Player $player, int $time, bool $static = false): bool{
         $pk = new SetTimePacket();
         $pk->time = $time;
-        $pk->started = !$static;
         $pk->encode();
         $pk->isEncoded = true;
         $player->dataPacket($pk);
@@ -2239,7 +2238,7 @@ class BaseAPI{
         /** @var Player[] $pl */
         $pl = [];
         foreach($player->getLevel()->getPlayers() as $p){
-            if($state || (!$state && !in_array($p->getName(), $ev->getHiddenFor()))){
+            if($state || (!$state && !in_array($p->getName(), $ev->getHiddenFor(), true))){
                 $pl[] = $p;
             }
         }
@@ -2250,13 +2249,11 @@ class BaseAPI{
         if(!$noPacket){
             if(!$state){
                 $pk = new MobEffectPacket();
-                $pk->eid = $player->getId(); // TODO: Remove
                 $pk->entityRuntimeId = $player->getId();
                 $pk->eventId = MobEffectPacket::EVENT_REMOVE;
                 $pk->effectId = $this->invisibilityEffect->getId();
             }else{
                 $pk = new MobEffectPacket();
-	            $pk->eid = $player->getId(); // TODO: Remove
                 $pk->entityRuntimeId = $player->getId();
                 $pk->effectId = $this->invisibilityEffect->getId();
                 $pk->amplifier = $this->invisibilityEffect->getAmplifier();
@@ -2319,7 +2316,6 @@ class BaseAPI{
                 if($p !== $player){
                     if($this->isVanished($player)){
                         if(!$noPacket){
-	                        $pk->eid = $player->getId(); // TODO: Remove
                             $pk->entityRuntimeId = $player->getId();
                             $p->dataPacket($pk);
                         }else{
@@ -2328,7 +2324,6 @@ class BaseAPI{
                     }
                     if($this->isVanished($p)){
                         if(!$this->hasNoPacket($p)){
-	                        $pk->eid = $player->getId(); // TODO: Remove
                             $pk->entityRuntimeId = $p->getId();
                             $player->dataPacket($pk);
                         }else{
@@ -2343,7 +2338,6 @@ class BaseAPI{
                 if($p !== $player){
                     if($this->isVanished($player)){
                         if(!$noPacket){
-	                        $pk->eid = $player->getId(); // TODO: Remove
                             $pk->entityRuntimeId = $player->getId();
                             $p->dataPacket($pk);
                         }else{
@@ -2352,7 +2346,6 @@ class BaseAPI{
                     }
                     if($this->isVanished($p)){
                         if(!$this->hasNoPacket($p)){
-	                        $pk->eid = $player->getId(); // TODO: Remove
                             $pk->entityRuntimeId = $p->getId();
                             $player->dataPacket($pk);
                         }else{

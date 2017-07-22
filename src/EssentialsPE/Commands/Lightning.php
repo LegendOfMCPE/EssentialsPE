@@ -36,7 +36,7 @@ class Lightning extends BaseCommand{
             return false;
         }
         $pos = isset($args[0]) ? $player : $player->getTargetBlock(100);
-        $damage = isset($args[1]) ? $args[1] : 0;
+        $damage = $args[1] ?? 0;
         $this->getAPI()->strikeLightning($pos, $damage);
         $sender->sendMessage(TextFormat::YELLOW . "Lightning launched!");
         return true;

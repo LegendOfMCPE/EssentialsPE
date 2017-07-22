@@ -65,7 +65,7 @@ class BigTreeCommand extends BaseCommand{
                 break;
         }
         $tree = new BigTree();
-        $tree->placeObject($sender->getLevel(), $block->getFloorX(), ($block->getFloorY() + 1), $block->getFloorZ(), $type);
+        $tree->placeObject($sender->getLevel(), $block->getFloorX(), $block->getFloorY() + 1, $block->getFloorZ(), $type);
         $sender->sendMessage(TextFormat::GREEN . "BigTree spawned!");
         return true;
     }

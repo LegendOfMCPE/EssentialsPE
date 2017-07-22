@@ -25,7 +25,7 @@ class RealName extends BaseCommand{
         if(!$this->testPermission($sender)){
             return false;
         }
-        if(count($args) != 1){
+        if(count($args) !== 1){
             $this->sendUsage($sender, $alias);
             return false;
         }

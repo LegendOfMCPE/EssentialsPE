@@ -61,7 +61,7 @@ class Sell extends BaseCommand{
             return false;
         }
 
-        $amount = $this->getAPI()->sellPlayerItem($sender, $item, (isset($args[1]) ? $args[1] : null));
+        $amount = $this->getAPI()->sellPlayerItem($sender, $item, $args[1] ?? null);
         if(!$amount){
             $sender->sendMessage(TextFormat::RED . "[Error] Worth not available for this item");
             return false;

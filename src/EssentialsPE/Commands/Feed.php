@@ -41,7 +41,7 @@ class Feed extends BaseCommand{
 		    return false;
 	    }
         $player->setFood(20);
-        $player->getLevel()->addParticle(new HappyVillagerParticle($player->add(0, 2), 4));
+        $player->getLevel()->addParticle(new HappyVillagerParticle($player->add(0, 2)));
         $player->sendMessage(TextFormat::GREEN . "You have been fed!");
         if($player !== $sender){
             $sender->sendMessage(TextFormat::GREEN . $player->getDisplayName() . " has been fed!");

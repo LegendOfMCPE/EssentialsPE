@@ -26,7 +26,7 @@ class PvP extends BaseCommand{
         if(!$this->testPermission($sender)){
             return false;
         }
-        if(!$sender instanceof Player || count($args) != 1 || !((($s = strtolower($args[0])) === "on" || (bool) $s || $s === "enable") || ($s === "off" || !((bool) $s)) || $s === "disable")){
+        if(!$sender instanceof Player || count($args) !== 1 || !((($s = strtolower($args[0])) === "on" || (bool) $s || $s === "enable") || ($s === "off" || !((bool) $s)) || $s === "disable")){
             $this->sendUsage($sender, $alias);
             return false;
         }

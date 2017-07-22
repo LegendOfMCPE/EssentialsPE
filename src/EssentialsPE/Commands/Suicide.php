@@ -30,7 +30,7 @@ class Suicide extends BaseCommand{
             $this->sendUsage($sender, $alias);
             return false;
         }
-        $sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($sender, EntityDamageEvent::CAUSE_SUICIDE, ($sender->getHealth())));
+        $sender->getServer()->getPluginManager()->callEvent($ev = new EntityDamageEvent($sender, EntityDamageEvent::CAUSE_SUICIDE, $sender->getHealth()));
         if($ev->isCancelled()){
             return true;
         }
