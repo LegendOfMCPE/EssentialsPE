@@ -6,7 +6,7 @@ use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityExplodeEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\server\ServerCommandEvent;
-use pocketmine\math\Vector3;
+
 
 class OtherEvents extends BaseEventHandler{
     /**

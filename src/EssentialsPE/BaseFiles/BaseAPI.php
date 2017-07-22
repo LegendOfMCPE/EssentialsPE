@@ -414,13 +414,15 @@ class BaseAPI{
     public function getCurrencySymbol(): string{
         return $this->economy->get("currency-symbol");
     }
-    
+
     /**
      * Return the top 5 players with most money
-     * 
-     * @return array
+     *
+     * @param CommandSender $sender
+     *
+     * @return bool
      */
-    public function sendBalanceTop($sender) {
+    public function sendBalanceTop(CommandSender $sender) : bool{
         $moneylist = $this->economy->get("player-balances");
         arsort($moneylist);
         $i = 0;
@@ -1002,6 +1004,10 @@ class BaseAPI{
         }
         $replace = Item::get(0);
         // First step: Merge target items...
+        /**
+         * @var int $slot
+         * @var Item $item
+         */
         foreach($items as $slot => $item){
             if(!isset($this->condenseShapes[0][$item->getId()]) && !isset($this->condenseShapes[1][$item->getId()])){
                 continue;
