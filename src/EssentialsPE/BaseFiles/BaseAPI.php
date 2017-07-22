@@ -155,13 +155,15 @@ class BaseAPI{
     }
 
     private final function loadKits(){
+        $parent = new Permission("essentials.kits");
+        $this->getServer()->getPluginManager()->addPermission($parent);
+
         $cfg = new Config($this->getEssentialsPEPlugin()->getDataFolder() . "Kits.yml", Config::YAML);
-        $children = [];
         foreach($cfg->getAll() as $n => $i){
             $this->kits[$n] = new BaseKit($n, $i);
-            $children[] = new Permission("essentials.kits." . $n);
+            $child = new Permission("essentials.kits." . $n);
+            $child->addParent($parent, true);
         }
-        $this->getServer()->getPluginManager()->addPermission(new Permission("essentials.kits", null, null, $children));
     }
 
     private final function loadWarps(){
