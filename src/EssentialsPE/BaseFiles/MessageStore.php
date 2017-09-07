@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: GiantQuartz
- * Date: 08/09/2017
- * Time: 00:31
- */
-
 namespace EssentialsPE\BaseFiles;
 
 class MessageStore {
