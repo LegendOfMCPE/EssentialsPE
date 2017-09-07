@@ -1155,7 +1155,7 @@ class BaseAPI{
     private $messagesAPI = null;
 
     public function loadMessagesAPI(){
-        //$this->messagesAPI = new MessagesAPI($this, $this->getFile() . "resources/Messages.yml"); TODO Directly implement in this class
+        $this->messagesAPI = new MessagesAPI($this->ess);
     }
 
     /**
