@@ -4,12 +4,11 @@
 
 # DO NOT EDIT THIS PROPERTY! For internal use ONLY
 version: 2.0.0
+# Message language
+language: english
 
 messages:
-  afk:
-    self:
-      enable: "&eYou're now AFK"
-      disable: "&eYou're no longer AFK"
-    other:
-      enable: "&e@player is now AFK"
-      disable: "&e@player is no longer AFK"
+  english:
+    example.message: "{RED}This is an example message"
+  spanish:
+    example.message: ""
