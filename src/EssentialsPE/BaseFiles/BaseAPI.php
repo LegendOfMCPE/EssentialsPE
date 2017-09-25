@@ -32,6 +32,7 @@ use pocketmine\IPlayer;
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
 use pocketmine\item\ItemBlock;
+use pocketmine\item\ItemFactory;
 use pocketmine\item\Tool;
 use pocketmine\level\Level;
 use pocketmine\level\Location;
@@ -709,12 +710,11 @@ class BaseAPI{
             $pk->type = 93;
             $pk->entityRuntimeId = Entity::$entityCount++;
             $pk->metadata = [];
-            $pk->speedX = $pk->speedY = $pk->speedZ = 0.0;
+            $motion = new Vector3(0, 0, 0);
+            $pk->motion = $motion;
             $this->lightningPacket = $pk;
         }
-        $this->lightningPacket->x = $pos->getX();
-        $this->lightningPacket->y = $pos->getY();
-        $this->lightningPacket->z = $pos->getZ();
+        $this->lightningPacket->position = $pos;
 
         return $this->lightningPacket;
     }
@@ -1097,7 +1097,7 @@ class BaseAPI{
         if($count < 1){
             return null;
         }
-        $condensed = new Item($newId, $damage, $count);
+        $condensed = ItemFactory::get($newId, $damage, (int) $count);
         if($condensed->getId() === Item::AIR){
             return null;
         }
