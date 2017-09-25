@@ -89,7 +89,7 @@ class SignEvents extends BaseEventHandler{
                             $this->getAPI()->addToPlayerBalance($event->getPlayer(), -$price);
                         }
                     }
-                    $event->getPlayer()->heal($event->getPlayer()->getMaxHealth(), new EntityRegainHealthEvent($event->getPlayer(), $event->getPlayer()->getMaxHealth(), EntityRegainHealthEvent::CAUSE_CUSTOM));
+                    $event->getPlayer()->heal(new EntityRegainHealthEvent($event->getPlayer(), $event->getPlayer()->getMaxHealth(), EntityRegainHealthEvent::CAUSE_CUSTOM));
                     $event->getPlayer()->sendMessage(TextFormat::GREEN . "You have been healed" . TextFormat::GREEN . ($price ? " for " . $this->getAPI()->getCurrencySymbol() . $price : null));
                 }
             }
