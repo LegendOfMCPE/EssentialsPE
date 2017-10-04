@@ -1292,7 +1292,7 @@ class BaseAPI{
         if($sender instanceof Player){
             $this->getSession($sender)->removeQuickReply();
         }else{
-            $this->quickReply[strtolower($sender)] = false;
+            $this->quickReply[strtolower($sender->getName())] = false;
         }
     }
 
