@@ -79,7 +79,7 @@ class Gamemode extends BaseOverrideCommand{
                 case Player::CREATIVE:
                 case Player::ADVENTURE:
                 case Player::SPECTATOR:
-                    $gm = $args[0];
+                    $gm = (int)$args[0];
                     break;
                 default:
                     $sender->sendMessage(TextFormat::RED . "[Error] Please specify a valid gamemode");
@@ -113,12 +113,12 @@ class Gamemode extends BaseOverrideCommand{
                     break;
             }
         }
-        $gmString = $this->getAPI()->getServer()->getGamemodeString((int) $gm);
+        $gmString = $this->getAPI()->getServer()->getGamemodeString($gm);
         if($player->getGamemode() === $gm){
-            $sender->sendMessage(TextFormat::RED . "[Error] " . ($player === $sender ? "You're" : $player->getDisplayName() . " is") . " already in " . $gmstring);
+            $sender->sendMessage(TextFormat::RED . "[Error] " . ($player === $sender ? "You're" : $player->getDisplayName() . " is") . " already in " . $gmString);
             return false;
         }
-        $player->setGamemode((int) $gm);
+        $player->setGamemode($gm);
         $player->sendMessage(TextFormat::YELLOW . "You're now in " . $gmString);
         if($player !== $sender){
             $sender->sendMessage(TextFormat::GREEN . $player->getDisplayName() . " is now in " . $gmString);
